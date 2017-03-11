@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="@dimen/mon_divider"
+    android:layout_marginTop="@dimen/mon_padding"
+    android:layout_marginLeft="@dimen/mon_margin"
+    android:layout_marginRight="@dimen/mon_margin"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:padding="@dimen/mon_margin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/image"
+            android:src="@drawable/back5"
+            android:layout_width="80dp"
+            android:layout_height="80dp" />
+        <RelativeLayout
+            android:id="@+id/lay1"
+            android:layout_toRightOf="@id/image"
+            android:layout_marginTop="@dimen/mon_margin"
+            android:layout_marginLeft="@dimen/mon_margin"
+            android:layout_marginBottom="@dimen/mon_wide"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txtName"
+                android:text="User Full Name"
+                style="@style/Title3TextStyleGrey"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/txtEmail"
+                android:layout_below="@id/txtName"
+                android:text="user@aftarobot.com"
+                style="@style/Title3TextStyleBlue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/lay2"
+            android:layout_below="@id/lay1"
+            android:layout_marginTop="@dimen/mon_margin"
+            android:layout_marginLeft="@dimen/mon_widest"
+            android:layout_marginRight="@dimen/mon_wide"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iconUpdate"
+                android:src="@drawable/ic_create"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:id="@+id/iconRemove"
+                android:src="@drawable/ic_cancel"
+                android:layout_toLeftOf="@id/iconUpdate"
+                android:tint="@color/red_600"
+                android:layout_marginRight="@dimen/mon_wider"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

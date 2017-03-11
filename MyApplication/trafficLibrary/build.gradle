@@ -1,4 +1,5 @@
-apply plugin: 'com.android.library'
+
+apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
@@ -20,11 +21,56 @@ android {
         }
     }
     packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
         exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/NOTICE.txt'
-        exclude 'META-INF/ASL2.0'
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LGPL2.1'
+//        exclude 'com/itextpdf/text/pdf/fonts/Symbol.afm'
+//
+//        exclude 'com/itextpdf/text/pdf/fonts/Courier-Oblique.afm'
+//        exclude 'com/itextpdf/text/pdf/fonts/Helvetica-Oblique.afm'
+//        exclude 'com/itextpdf/text/pdf/fonts/Times-Oblique.afm'
+//
+//        exclude 'com/itextpdf/text/pdf/fonts/Courier.afm'
+//        exclude 'com/itextpdf/text/pdf/fonts/Helvetica.afm'
+//        exclude 'com/itextpdf/text/pdf/fonts/Times.afm'
+//        exclude 'com/itextpdf/text/pdf/fonts/Times-Roman.afm'
+//
+//        exclude 'com/itextpdf/text/pdf/fonts/Courier-Italic.afm'
+//        exclude 'com/itextpdf/text/pdf/fonts/Helvetica-Italic.afm'
+//        exclude 'com/itextpdf/text/pdf/fonts/Times-Italic.afm'
+//
+//        exclude 'com/itextpdf/text/pdf/fonts/Courier-Bold.afm'
+//        exclude 'com/itextpdf/text/pdf/fonts/Helvetica-Bold.afm'
+//        exclude 'com/itextpdf/text/pdf/fonts/Times-Bold.afm'
+//
+//        exclude 'com/itextpdf/text/pdf/fonts/Courier-BoldOblique.afm'
+//        exclude 'com/itextpdf/text/pdf/fonts/Helvetica-BoldOblique.afm'
+//        exclude 'com/itextpdf/text/pdf/fonts/Times-BoldOblique.afm'
+//
+//        exclude 'com/itextpdf/text/pdf/fonts/Courier-BoldItalic.afm'
+//        exclude 'com/itextpdf/text/pdf/fonts/Helvetica-BoldItalic.afm'
+//        exclude 'com/itextpdf/text/pdf/fonts/Times-BoldItalic.afm'
+//
+//        exclude 'com/itextpdf/text/pdf/fonts/ZapfDingbats.afm'
+//        exclude 'com/itextpdf/text/pdf/fonts/mustRead.html'
+//        exclude 'com/itextpdf/text/pdf/fonts/cmap_info.txt'
+//        exclude 'com/itextpdf/text/pdf/fonts/glyphlist.txt'
+//
+//        exclude 'com/itextpdf/text/l10n/error/pt.lng'
+//        exclude 'com/itextpdf/text/l10n/error/en.lng'
+//        exclude 'com/itextpdf/text/l10n/error/nl.lng'
+//
+//        exclude 'com/itextpdf/text/AGPL.txt'
+//        exclude 'com/itextpdf/text/LICENSE.txt'
+//        exclude 'com/itextpdf/text/NOTICE.txt'
+
     }
     lintOptions {
         abortOnError false
@@ -47,11 +93,10 @@ dependencies {
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
     compile group: 'commons-codec', name: 'commons-codec', version: '1.10'
 
-    compile 'com.google.android.gms:play-services-maps:10.2.0'
+    compile 'com.google.android.gms:play-services:10.2.0'
     compile 'com.google.android.gms:play-services-awareness:10.2.0'
     compile 'com.google.android.gms:play-services-gcm:10.2.0'
     compile 'com.google.android.gms:play-services-places:10.2.0'
-    compile 'com.google.android.gms:play-services-nearby:10.2.0'
     compile 'com.android.support:support-v4:25.1.1'
     compile 'com.android.support:appcompat-v7:25.1.1'
     compile 'com.android.support:cardview-v7:25.1.1'
@@ -67,14 +112,12 @@ dependencies {
     compile 'com.google.firebase:firebase-ads:10.2.0'
     compile 'com.google.firebase:firebase-core:10.2.0'
     compile 'com.firebase:firebase-jobdispatcher-with-gcm-dep:0.5.0'
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
     compile 'com.firebaseui:firebase-ui:1.1.1'
     compile 'com.firebaseui:firebase-ui-auth:1.1.1'
     compile 'com.firebase:firebase-client-android:2.5.2'
-//    compile 'com.firebase:geofire-android:2.1.0'
-    // https://mvnrepository.com/artifact/com.firebase/geofire-android
-//    compile group: 'com.firebase', name: 'geofire-android', version: '2.1.1'
     compile 'com.firebase:geofire-android:2.1.1'
+
+    //
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.7.2'
     compile 'com.squareup.okhttp:okhttp:2.7.2'
     compile 'com.cloudinary:cloudinary-core:1.3.0'
@@ -85,7 +128,10 @@ dependencies {
     compile 'com.snappydb:snappydb-lib:0.5.2'
     compile 'me.zhanghai.android.materialratingbar:library:1.0.2'
     compile 'com.google.code.findbugs:jsr305:2.0.1'
+
     testCompile 'junit:junit:4.12'
     compile project(path: ':backend', configuration: 'android-endpoints')
 }
 apply plugin: 'com.google.gms.google-services'
+
+//Error:Dependency MyApplication:trafficLibrary:unspecified on project officerApp resolves to an APK archive which is not supported as a compilation dependency. File: /work/REPOS/REPOS-2016/TrafficPlatform/MyApplication/trafficLibrary/build/outputs/apk/trafficLibrary-release-unsigned.apk

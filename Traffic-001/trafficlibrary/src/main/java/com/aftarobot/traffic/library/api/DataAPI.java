@@ -1,0 +1,234 @@
+package com.aftarobot.traffic.library.api;
+
+import android.util.Log;
+
+import com.aftarobot.traffic.library.data.DepartmentDTO;
+import com.aftarobot.traffic.library.data.UserDTO;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.Random;
+
+/**
+ * Created by aubreymalabie on 2/23/17.
+ */
+
+public class DataAPI {
+    FirebaseAuth auth;
+    FirebaseDatabase db;
+
+    public DataAPI() {
+        auth = FirebaseAuth.getInstance();
+        db = FirebaseDatabase.getInstance();
+    }
+
+    public static final String
+            DEPARTMENTS = "departments",
+            USERS = "users",
+            CITIES = "cities",
+            COUNTRIES = "countries",
+            TAG = DataAPI.class.getSimpleName();
+
+    public boolean isUserSignedIn(String email) {
+        if (auth.getCurrentUser() == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public interface DataListener {
+        void onResponse(String key);
+
+        void onError(String message);
+    }
+
+    public interface UserListener {
+        void onResponse(UserDTO user);
+
+        void onError(String message);
+    }
+
+    public interface DepartmentListener {
+        void onResponse(DepartmentDTO department);
+
+        void onError(String message);
+    }
+
+    static Random random = new Random(System.currentTimeMillis());
+
+    public String getRandomPassword() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(getRandomLetter());
+        sb.append(getRandomLetter());
+        sb.append(getRandomSymbol());
+        sb.append(getRandomLetter());
+        int count = random.nextInt(6);
+        if (count < 3) count = 3;
+        for (int i = 0; i < count; i++) {
+            sb.append(random.nextInt(9));
+        }
+        sb.append(getRandomSymbol());
+        sb.append(getRandomLetter());
+
+        return sb.toString();
+    }
+
+    private String getRandomLetter() {
+        return letters[random.nextInt(letters.length - 1)];
+    }
+
+    private String getRandomSymbol() {
+        return symbols[random.nextInt(symbols.length - 1)];
+    }
+
+    public void addUser(final UserDTO user, final DataListener listener) {
+
+        getUserByEmail(user.getEmail(), new UserListener() {
+            @Override
+            public void onResponse(UserDTO u) {
+                if (u != null) {
+                    listener.onError("User already exists with email: " .concat(user.getEmail()));
+                    return;
+                }
+            }
+
+            @Override
+            public void onError(String message) {
+                if (!message.contains("User not found")){
+                    listener.onError(message);
+                    return;
+                }
+                Log.d(TAG, "onError: user not found, adding user");
+                writeUser(user, listener);
+            }
+        });
+
+    }
+
+    private void writeUser(final UserDTO user, final DataListener listener) {
+        DatabaseReference ref = db.getReference(USERS);
+        user.setPassword(getRandomPassword());
+        ref.push().setValue(user, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                if (databaseError == null) {
+                    databaseReference.child("userID").setValue(databaseReference.getKey());
+                    Log.i(TAG, "***************** onComplete: user added: " + user.getFullName());
+                    user.setUserID(databaseReference.getKey());
+                    listener.onResponse(databaseReference.getKey());
+                } else {
+                    listener.onError(databaseError.getMessage());
+                }
+            }
+        });
+    }
+
+    public void getUserByEmail(final String email, final UserListener listener) {
+        Log.d(TAG, "################## getUserByEmail: find user by mail: " + email);
+        DatabaseReference usersRef = db.getReference(USERS);
+        Query q = usersRef.orderByChild("email").equalTo(email);
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.i(TAG, "onDataChange: getUser: dataSnapshot:" + dataSnapshot);
+                if (dataSnapshot.getValue() == null) {
+                    Log.e(TAG, "onDataChange: getUser: no users found for uid: " + email);
+                    listener.onError("User not found");
+                    return;
+                }
+                Log.w(TAG, "onDataChange: getUser: users found for email: "
+                        + dataSnapshot.getChildrenCount());
+                for (DataSnapshot shot : dataSnapshot.getChildren()) {
+                    UserDTO u = shot.getValue(UserDTO.class);
+                    Log.e(TAG, "********* onDataChange: getUser:" .concat(u.getFullName()));
+                    listener.onResponse(u);
+                    return;
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                listener.onError(databaseError.getMessage());
+            }
+        });
+    }
+
+    public void addDepartment(final DepartmentDTO dept, final DataListener listener) {
+        getDepartmentByName(dept.getDepartmentName(), new DepartmentListener() {
+            @Override
+            public void onResponse(DepartmentDTO department) {
+                listener.onError("Department already exists");
+            }
+
+            @Override
+            public void onError(String message) {
+                if (!message.contains("Department not found")) {
+                    listener.onError(message);
+                    return;
+                }
+                writeDepartment(dept, listener);
+            }
+        });
+
+    }
+
+    private void writeDepartment(final DepartmentDTO dept, final DataListener listener) {
+        DatabaseReference ref = db.getReference(DEPARTMENTS);
+        ref.push().setValue(dept, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                if (databaseError == null) {
+                    databaseReference.child("departmentID").setValue(databaseReference.getKey());
+                    Log.i(TAG, "***************** onComplete: department added: " + dept.getDepartmentID());
+                    dept.setDepartmentID(databaseReference.getKey());
+                    listener.onResponse(databaseReference.getKey());
+                } else {
+                    listener.onError(databaseError.getMessage());
+                }
+
+            }
+        });
+    }
+
+    public void getDepartmentByName(final String name, final DepartmentListener listener) {
+        Log.d(TAG, "################## getUserByEmail: find dept by mail: " + name);
+        DatabaseReference usersRef = db.getReference(DEPARTMENTS);
+        Query q = usersRef.orderByChild("departmentName").equalTo(name);
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.i(TAG, "onDataChange: getDepartmentByName: dataSnapshot:" + dataSnapshot);
+                if (dataSnapshot.getValue() == null) {
+                    Log.e(TAG, "onDataChange: getDepartmentByName: no depts found for name: " + name);
+                    listener.onError("Department not found");
+                    return;
+                }
+                Log.w(TAG, "onDataChange: getDepartmentByName: depts found for name: "
+                        + dataSnapshot.getChildrenCount());
+                for (DataSnapshot shot : dataSnapshot.getChildren()) {
+                    DepartmentDTO u = shot.getValue(DepartmentDTO.class);
+                    Log.e(TAG, "********* onDataChange: getDepartmentByName:" .concat(u.getDepartmentName()));
+                    listener.onResponse(u);
+                    return;
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                listener.onError(databaseError.getMessage());
+            }
+        });
+    }
+
+    private String[] letters = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k",
+            "m", "n", "p", "q", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "J", "K", "L", "M", "N", "P", "Q", "R", "S", "T",
+            "U", "V", "W", "X", "Y", "Z"};
+    private String[] symbols = {"*", "#", "^", "%"};
+}

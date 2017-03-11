@@ -29,6 +29,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.aftarobot.traffic.platform.library.api.PDFApi;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,6 +94,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        PDFApi api = new PDFApi();
+        api.getDocument();
     }
 
     private void populateAutoComplete() {

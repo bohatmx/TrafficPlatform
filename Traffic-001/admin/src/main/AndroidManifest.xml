@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.aftarobot.admin">
+
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <!-- DEBUG API KEY: AIzaSyBnWHZRSL6JbwmF9a9VBpg0NWQt7twAzaI -->
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:theme="@style/CommuterTheme">
+        <meta-data
+            android:name="com.google.android.awareness.API_KEY"
+            android:value="@string/admin_api_key" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/admin_api_key" />
+        <meta-data
+            android:name="com.google.android.nearby.messages.API_KEY"
+            android:value="@string/admin_api_key" />
+
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".services.AdminInstanceIDService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".services.AdminMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name=".departments.DepartmentAdminActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:parentActivityName=".MainActivity"
+            android:label="@string/title_activity_user_management" />
+        <activity
+            android:name=".users.UserAdminActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:label="@string/title_activity_user_admin"></activity>
+    </application>
+
+</manifest>

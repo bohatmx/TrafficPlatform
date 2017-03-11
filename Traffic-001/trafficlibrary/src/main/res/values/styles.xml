@@ -1,0 +1,357 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/teal_500</item>
+        <item name="colorPrimaryDark">@color/teal_900</item>
+        <item name="colorAccent">@color/orange_900</item>
+        <item name="android:itemTextAppearance">@style/TextAppearance</item>
+    </style>
+
+    <style name="TextAppearance">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="actionMenuTextColor">@color/black</item>
+        <item name="android:actionMenuTextColor">@color/black</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AppTheme.NoActionBar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.NoActionBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AftaRobotTheme" parent="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="colorPrimary">@color/teal_500</item>
+        <item name="colorPrimaryDark">@color/teal_900</item>
+        <item name="android:windowActionBarOverlay">true</item>
+    </style>
+
+    <style name="MarshalTheme" parent="AftaRobotTheme">
+        <item name="colorPrimary">@color/teal_500</item>
+        <item name="colorPrimaryDark">@color/teal_700</item>
+    </style>
+
+    <style name="OwnerTheme" parent="AftaRobotTheme">
+        <item name="colorPrimary">@color/blue_700</item>
+        <item name="colorPrimaryDark">@color/blue_900</item>
+    </style>
+
+    <style name="DriverTheme" parent="AftaRobotTheme">
+        <item name="colorPrimary">@color/teal_500</item>
+        <item name="colorPrimaryDark">@color/teal_900</item>
+    </style>
+
+
+    <style name="PatrollerTheme" parent="AftaRobotTheme">
+        <item name="colorPrimary">@color/pink_600</item>
+        <item name="colorPrimaryDark">@color/pink_900</item>
+    </style>
+
+    <style name="AssocBuilderTheme" parent="AftaRobotTheme">
+        <item name="colorPrimary">@color/pink_600</item>
+        <item name="colorPrimaryDark">@color/pink_900</item>
+    </style>
+
+
+    <style name="AdminTheme" parent="AftaRobotTheme">
+        <item name="colorPrimary">@color/indigo_400</item>
+        <item name="colorPrimaryDark">@color/indigo_800</item>
+    </style>
+
+    <style name="CommuterTheme" parent="AftaRobotTheme">
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimaryDark">@color/purple_800</item>
+    </style>
+
+
+    <style name="GreenCircleSmall" parent="@android:style/TextAppearance.Small">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:background">@drawable/xgreen_oval_small</item>
+    </style>
+
+    <style name="GreyCircleSmall" parent="@android:style/TextAppearance.Small">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:background">@drawable/xgrey_oval_small</item>
+    </style>
+
+    <style name="PinkCircleSmall" parent="@android:style/TextAppearance.Small">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:background">@drawable/xpink_oval_small</item>
+    </style>
+
+    <style name="IndigoCircleSmall" parent="@android:style/TextAppearance.Small">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:background">@drawable/xindigo_oval_small</item>
+    </style>
+
+    <style name="BlueCircleSmall" parent="@android:style/TextAppearance.Small">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:background">@drawable/xblue_oval_small</item>
+    </style>
+
+    <style name="OrangeCircleSmall" parent="@android:style/TextAppearance.Small">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:background">@drawable/xorange_oval_small</item>
+    </style>
+
+    <style name="RedCircleSmall" parent="@android:style/TextAppearance.Small">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:background">@drawable/xred_oval_small</item>
+    </style>
+
+    <style name="BlackCircleSmall" parent="@android:style/TextAppearance.Small">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:background">@drawable/xblack_oval_small</item>
+    </style>
+
+
+    <style name="Landmark">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="TitleStyle">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="SmallStyle">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="SmallStyleWhite">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="GreyStyle">
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="MapMarkerStyleRed">
+        <item name="android:background">@drawable/xred_oval_small</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="MapMarkerStyleBlue">
+        <item name="android:background">@drawable/xblue_oval_small</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+
+    <style name="Title1TextStyleBlue" parent="@android:style/TextAppearance.Large">
+        <item name="android:textColor">@color/blue_500</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">30sp</item>
+    </style>
+
+    <style name="Title1TextStyleGreen" parent="@android:style/TextAppearance.Large">
+        <item name="android:textColor">@color/teal_600</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">30sp</item>
+    </style>
+
+    <style name="Title1TextStyleGrey" parent="@android:style/TextAppearance.Large">
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:textSize">30sp</item>
+    </style>
+
+    <style name="Title1TextStyleYellow" parent="@android:style/TextAppearance.Large">
+        <item name="android:textColor">@color/pale_yellow</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:textSize">30sp</item>
+    </style>
+
+    <style name="Title1TextStyleBlack" parent="@android:style/TextAppearance.Large">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">30sp</item>
+    </style>
+
+    <style name="Title1TextStyleWhite" parent="@android:style/TextAppearance.Large">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">30sp</item>
+    </style>
+
+    <style name="Title1TextStyleRed" parent="@android:style/TextAppearance.Large">
+        <item name="android:textColor">@color/maroon</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">30sp</item>
+    </style>
+
+    <style name="Title2TextStyleGrey" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="Title2TextStyleWhite" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="Title3TextStyleWhite" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="Title3TextStyleGrey" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="SmallTextGrey" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Title2TextStyleBlue" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/navy_blue</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="Title3TextStyleBlue" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/blue_600</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
+
+    </style>
+
+    <style name="Title2TextStyleBlack" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="Title2TextStyleRed" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/red_700</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+
+    <style name="Title3TextStyleBlack" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="Title3TextStyleBlack16" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Title3TextStyleGreen" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/green</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="Title3TextStyleRed" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/red_900</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="Title2TextStyleGreen" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/green</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="TextStyleBlue" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/navy_blue</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="TextStyleBlueSmall" parent="@android:style/TextAppearance.Small">
+        <item name="android:textColor">@color/navy_blue</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="TextStyleGreen" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/green</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+    >
+
+    <style name="TextStyleGreySmall" parent="@android:style/TextAppearance.Small">
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextStyleDarkGreySmall" parent="@android:style/TextAppearance.Small">
+        <item name="android:textColor">@color/grey_600</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextStyleWhiteSmall" parent="@android:style/TextAppearance.Small">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="PagerSmall">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:padding">@dimen/mon_margin</item>
+        <item name="android:background">@color/indigo_900</item>
+    </style>
+
+
+</resources>

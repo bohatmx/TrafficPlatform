@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="@dimen/mon_divider"
+    android:layout_marginTop="@dimen/mon_padding"
+    android:layout_marginLeft="@dimen/mon_margin"
+    android:layout_marginRight="@dimen/mon_margin"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:padding="@dimen/mon_margin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/image"
+            android:src="@drawable/ic_hand"
+            android:layout_width="24dp"
+            android:layout_height="24dp" />
+        <RelativeLayout
+            android:id="@+id/lay1"
+            android:layout_toRightOf="@id/image"
+            android:layout_marginTop="@dimen/mon_divider"
+            android:layout_marginLeft="@dimen/mon_margin"
+            android:layout_marginBottom="@dimen/mon_padding"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txtName"
+                android:text="Department Name"
+                style="@style/Title3TextStyleGrey"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/txtCity"
+                android:layout_below="@id/txtName"
+                android:text="City Name"
+                style="@style/Title3TextStyleBlue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/txtEmail"
+                android:layout_below="@id/txtCity"
+                android:text="email"
+                android:layout_marginTop="@dimen/mon_wide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/lay2"
+            android:layout_below="@id/lay1"
+            android:layout_marginTop="@dimen/mon_margin"
+            android:layout_marginRight="@dimen/mon_wide"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/iconUpdate"
+                android:text="ADD USERS"
+
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/teal_700"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/iconRemove"
+                android:text="DEACTIVATE"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_toLeftOf="@id/iconUpdate"
+                android:textColor="@color/red_800"
+                android:layout_marginRight="@dimen/mon_wide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
