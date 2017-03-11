@@ -1,15 +1,17 @@
 package com.aftarobot.traffic.library.data;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.UUID;
 
 /**
  * Created by aubreymalabie on 3/11/17.
  */
 
-public class TicketDTO {
-    private String ticketID, ticketNumber,
+public class TicketDTO implements Serializable{
+    private String ticketID, ticketNumber, localKey,
             licensePlate, licenseNumber, idNumber, stringDate;
     private long date;
     private String firstName, lastName, address;
@@ -23,6 +25,15 @@ public class TicketDTO {
     public TicketDTO() {
         date = new Date().getTime();
         stringDate = sdf.format(new Date());
+        localKey = UUID.randomUUID().toString();
+    }
+
+    public String getLocalKey() {
+        return localKey;
+    }
+
+    public void setLocalKey(String localKey) {
+        this.localKey = localKey;
     }
 
     public String getTicketID() {

@@ -1,15 +1,20 @@
 package com.aftarobot.traffic.library.data;
 
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by aubreymalabie on 2/23/17.
  */
 
-public class PhotoDTO {
+public class PhotoDTO implements Serializable{
 
-    private String photoID, caption, url;
+    private String photoID, caption, url,
+    localFilePath, stringDateTaken, stringDateUploaded;
     private int type, height, width;
     private Long dateTaken, dateUploaded;
-
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd MMMM yyyy HH:mm:ss");
     public static final int
             TRAFFIC_FINE = 1,
             TRAFFIC_ACCIDENT = 2,
@@ -17,6 +22,35 @@ public class PhotoDTO {
             OTHER = 4,
             ORIENTATION_PORTRAIT = 5,
             ORIENTATION_LANDSCAPE = 6;
+
+    public PhotoDTO() {
+        dateTaken = new Date().getTime();
+        stringDateTaken = sdf.format(new Date());
+    }
+
+    public String getLocalFilePath() {
+        return localFilePath;
+    }
+
+    public String getStringDateTaken() {
+        return stringDateTaken;
+    }
+
+    public void setStringDateTaken(String stringDateTaken) {
+        this.stringDateTaken = stringDateTaken;
+    }
+
+    public String getStringDateUploaded() {
+        return stringDateUploaded;
+    }
+
+    public void setStringDateUploaded(String stringDateUploaded) {
+        this.stringDateUploaded = stringDateUploaded;
+    }
+
+    public void setLocalFilePath(String localFilePath) {
+        this.localFilePath = localFilePath;
+    }
 
     public String getPhotoID() {
         return photoID;

@@ -1,5 +1,6 @@
 package com.aftarobot.traffic.officer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aftarobot.traffic.library.login.BaseLoginActivity;
+import com.aftarobot.traffic.officer.capture.CaptureDriverActivity;
 
 import es.dmoral.toasty.Toasty;
 
@@ -45,8 +47,7 @@ public class MainActivity extends BaseLoginActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                startCapture();
             }
         });
 
@@ -55,7 +56,7 @@ public class MainActivity extends BaseLoginActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-        drawer.openDrawer(GravityCompat.START, true);
+//        drawer.openDrawer(GravityCompat.START, true);
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -65,6 +66,12 @@ public class MainActivity extends BaseLoginActivity
             txt.setText(user.getFullName());
             getSupportActionBar().setSubtitle(user.getDepartmentName());
         }
+    }
+
+    public static final int REQUEST_CAPTURE = 1243;
+    private void startCapture() {
+        Intent m = new Intent(getApplicationContext(), CaptureDriverActivity.class);
+        startActivityForResult(m, REQUEST_CAPTURE);
     }
 
     @Override

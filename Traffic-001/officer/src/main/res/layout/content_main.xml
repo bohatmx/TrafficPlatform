@@ -99,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:text="Summary"
                 android:textColor="@color/grey_700"
-                android:textSize="30sp"
+                android:textSize="24sp"
                 android:textStyle="bold" />
 
             <ImageView
@@ -110,28 +110,30 @@
 
             <RelativeLayout
                 android:id="@+id/lay1"
+                android:layout_marginTop="@dimen/mon_margin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtSummary">
 
-                <TextView
-                    android:id="@+id/label"
-                    style="@style/Title3TextStyleGrey"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/mon_margin"
-                    android:text="Total Tickets" />
+
 
                 <TextView
                     android:id="@+id/tickets"
                     style="@style/Title1TextStyleBlack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/mon_margin"
-                    android:layout_toRightOf="@id/label"
+                    android:layout_alignParentRight="true"
                     android:text="25"
                     android:textSize="40sp" />
+                <TextView
+                    android:id="@+id/label"
+                    style="@style/Title3TextStyleGrey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/tickets"
+                    android:layout_marginRight="@dimen/mon_margin"
+                    android:text="Total Tickets" />
 
 
             </RelativeLayout>
@@ -145,23 +147,25 @@
                 android:layout_marginTop="@dimen/mon_margin">
 
                 <TextView
+                    android:id="@+id/amount"
+                    style="@style/Title1TextStyleGreen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="R2 590"
+                    android:textSize="40sp" />
+
+                <TextView
                     android:id="@+id/label2"
                     style="@style/Title3TextStyleGrey"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/amount"
                     android:layout_marginRight="@dimen/mon_margin"
                     android:text="Total Fines" />
 
-                <TextView
-                    android:id="@+id/amount"
-                    style="@style/Title1TextStyleGreen"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/mon_margin"
-                    android:layout_toRightOf="@id/label2"
-                    android:text="R2 590"
-                    android:textSize="48sp" />
+
 
 
             </RelativeLayout>

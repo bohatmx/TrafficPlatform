@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/amber_100"
+    android:padding="@dimen/mon_margin">
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_hand" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/mon_margin"
+        android:layout_toRightOf="@id/image">
+
+        <RelativeLayout
+            android:id="@+id/lay1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txtCode"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CODE" />
+            <TextView
+                android:id="@+id/txtReg"
+                android:layout_toRightOf="@id/txtCode"
+                android:layout_marginLeft="@dimen/mon_margin"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="REGULATION" />
+            <TextView
+                android:id="@+id/txtAmount"
+                android:layout_toRightOf="@id/txtReg"
+                android:layout_marginLeft="@dimen/mon_margin"
+                android:textStyle="bold"
+                android:textColor="@color/teal_800"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1500.00" />
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/txtCharge"
+            android:layout_below="@id/lay1"
+            android:maxLength="180"
+            android:minLines="1"
+            android:maxLines="5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="of the charge will come hereSome of the charge will come hereSome of the charge will come hereSome of the charge will come hereSome of the charge will come here" />
+    </RelativeLayout>
+
+</RelativeLayout>

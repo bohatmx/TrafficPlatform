@@ -11,6 +11,25 @@ public class ResponseBag implements Serializable{
     private List<UserDTO> users;
     private List<DepartmentDTO> departments;
     private List<CityDTO> cities;
+    private List<String> files;
+    private List<PhotoDTO> photos;
+    private List<FineDTO> fines;
+
+    public List<FineDTO> getFines() {
+        return fines;
+    }
+
+    public void setFines(List<FineDTO> fines) {
+        this.fines = fines;
+    }
+
+    public List<PhotoDTO> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(List<PhotoDTO> photos) {
+        this.photos = photos;
+    }
 
     public List<UserDTO> getUsers() {
         return users;
@@ -34,5 +53,13 @@ public class ResponseBag implements Serializable{
 
     public void setCities(List<CityDTO> cities) {
         this.cities = cities;
+    }
+
+    public List<String> getFiles() {
+        return files;
+    }
+
+    public void setFiles(List<String> files) {
+        this.files = files;
     }
 }

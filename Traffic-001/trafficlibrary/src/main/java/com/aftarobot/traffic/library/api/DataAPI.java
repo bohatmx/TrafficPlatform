@@ -3,6 +3,8 @@ package com.aftarobot.traffic.library.api;
 import android.util.Log;
 
 import com.aftarobot.traffic.library.data.DepartmentDTO;
+import com.aftarobot.traffic.library.data.FineDTO;
+import com.aftarobot.traffic.library.data.TicketDTO;
 import com.aftarobot.traffic.library.data.UserDTO;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -31,7 +33,7 @@ public class DataAPI {
             DEPARTMENTS = "departments",
             USERS = "users",
             CITIES = "cities",
-            COUNTRIES = "countries",
+            COUNTRIES = "countries", FINES = "fines", TICKETS = "tickets",
             TAG = DataAPI.class.getSimpleName();
 
     public boolean isUserSignedIn(String email) {
@@ -78,6 +80,40 @@ public class DataAPI {
         sb.append(getRandomLetter());
 
         return sb.toString();
+    }
+    public void addFine(final FineDTO fine, final DataListener listener) {
+        DatabaseReference ref = db.getReference(FINES);
+        ref.push().setValue(fine, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                if (databaseError == null) {
+                    databaseReference.child("fineID").setValue(databaseReference.getKey());
+                    Log.i(TAG, "***************** onComplete: fine added: " + fine.getCode());
+                    fine.setFineID(databaseReference.getKey());
+                    listener.onResponse(databaseReference.getKey());
+                } else {
+                    listener.onError(databaseError.getMessage());
+                }
+            }
+        });
+
+    }
+    public void addTicket(final TicketDTO ticket, final DataListener listener) {
+        DatabaseReference ref = db.getReference(DEPARTMENTS);
+        ref.push().setValue(ticket, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                if (databaseError == null) {
+                    databaseReference.child("ticketID").setValue(databaseReference.getKey());
+                    Log.i(TAG, "***************** onComplete: fine added: " + ticket.getLicensePlate());
+                    ticket.setTicketID(databaseReference.getKey());
+                    listener.onResponse(databaseReference.getKey());
+                } else {
+                    listener.onError(databaseError.getMessage());
+                }
+            }
+        });
+
     }
 
     private String getRandomLetter() {

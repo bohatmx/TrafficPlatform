@@ -5,8 +5,10 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
-    <!-- API KEY, DEBUG: AIzaSyDcRalx9IJAw006svcwHsyHRoTm8dD7njE  -->
+    <!-- API KEY, DEBUG: AIzaSyDcRalx9IJAw006svcwHsyHRoTm8dD7njE -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -22,10 +24,11 @@
         <meta-data
             android:name="com.google.android.nearby.messages.API_KEY"
             android:value="@string/officer_api_key" />
+
         <activity
             android:name=".MainActivity"
-            android:theme="@style/OwnerTheme"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:theme="@style/OwnerTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -46,7 +49,28 @@
             </intent-filter>
         </service>
 
-
+        <activity
+            android:name="com.afollestad.materialcamera.CaptureActivity"
+            android:theme="@style/MaterialCamera.CaptureActivity" />
+        <activity
+            android:name="com.afollestad.materialcamera.CaptureActivity2"
+            android:theme="@style/MaterialCamera.CaptureActivity" />
+        <activity
+            android:name=".capture.CaptureDriverActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:label="@string/title_activity_capture_driver" />
+        <activity android:name=".capture.CameraActivity" />
+        <activity
+            android:name=".capture.CaptureFinesActivity"
+            android:label="@string/title_activity_capture_fines"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".capture.CaptureDriverActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.aftarobot.traffic.officer.capture.CaptureDriverActivity" />
+        </activity>
     </application>
 
 </manifest>
