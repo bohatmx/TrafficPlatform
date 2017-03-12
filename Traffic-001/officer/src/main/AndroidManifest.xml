@@ -28,12 +28,9 @@
 
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <!-- SERVICES FOR FIREBASE CLOUD MESSAGING -->
@@ -80,7 +77,16 @@
 
         <activity
             android:name=".NotifHandlerActivity"
-            android:label="@string/title_activity_notif_handler"></activity>
+            android:label="@string/title_activity_notif_handler" />
+        <activity
+            android:name=".OfficerLoginActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

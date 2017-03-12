@@ -24,5 +24,5 @@ public class Constants {
     public static final String
             PINK = "#E91E63", TEAL = "#009688",
             RED = "#e53935", GREEN = "#4CAF50", LIME = "#C0CA33", BLUE = "#29B6F6", ORANGE = "#F57C00",
-            CYAN = "00ACC1", YELLOW = "yellow", AMBER = "#FFB300", LIGHT_GREEN = "#8BC34A";
+            CYAN = "00ACC1", YELLOW = Constants.YELLOW, AMBER = "#FFB300", LIGHT_GREEN = "#8BC34A";
 }

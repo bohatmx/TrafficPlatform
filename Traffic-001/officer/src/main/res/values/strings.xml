@@ -23,4 +23,5 @@
     <string name="title_activity_capture_driver">CaptureDriverActivity</string>
     <string name="title_activity_capture_fines">CaptureFinesActivity</string>
     <string name="title_activity_notif_handler">NotifHandlerActivity</string>
+    <string name="title_activity_login">LoginActivity</string>
 </resources>

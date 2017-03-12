@@ -33,6 +33,7 @@ import com.aftarobot.traffic.library.data.DepartmentDTO;
 import com.aftarobot.traffic.library.data.ResponseBag;
 import com.aftarobot.traffic.library.data.UserDTO;
 import com.aftarobot.traffic.library.login.BaseLoginActivity;
+import com.aftarobot.traffic.library.util.Constants;
 import com.aftarobot.traffic.library.util.DepthPageTransformer;
 import com.aftarobot.traffic.library.util.PagerFragment;
 
@@ -104,7 +105,9 @@ public class MainActivity extends BaseLoginActivity
     @Override
     public void userLoggedIn(boolean isFirstTime) {
         Log.i(TAG, "userLoggedIn: building pages in viewpager...");
-        Toasty.success(this, "You have been logged in", Toast.LENGTH_SHORT, true).show();
+        if (isFirstTime) {
+            Toasty.success(this, "You have been logged in", Toast.LENGTH_SHORT, true).show();
+        }
         if (user != null) {
             View hdr = navigationView.getHeaderView(0);
             TextView txt = (TextView) hdr.findViewById(R.id.txtName);
@@ -132,13 +135,31 @@ public class MainActivity extends BaseLoginActivity
     }
 
     @Override
-    public void loginFailed() {
-        showSnackBar("Login failed", "Not OK", "#f44336");
-    }
+    public void loginFailed(int type) {
+        drawer.closeDrawer(GravityCompat.START,true);
+        switch (type) {
+            case FIREBASE_AUTH_FAILED:
+                snackbar = Snackbar.make(toolbar,"Login failed. Please check credentials",Snackbar.LENGTH_INDEFINITE);
+                snackbar.setActionTextColor(Color.parseColor(Constants.ORANGE));
+                snackbar.setAction("Try Again", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startLogin();
+                    }
+                }).show();
+                break;
+            case TRAFFIC_USER_NOT_FOUND:
+                Toasty.success(this,"Welcome aboard the best Traffic Officer app!!!",
+                        Toast.LENGTH_LONG,true).show();
+                break;
+            case USER_CANCELLED:
+                Toasty.warning(this,"You cancelled the login process. See ya later!",
+                        Toast.LENGTH_LONG,true).show();
+                finish();
+                break;
+        }
 
-    @Override
-    public void loginCancelled() {
-        showSnackBar("Login cancelled", "Not OK", "#f44336");
+
     }
 
     @Override

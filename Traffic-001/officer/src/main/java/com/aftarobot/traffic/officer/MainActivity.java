@@ -11,24 +11,19 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.aftarobot.traffic.library.data.FCMData;
-import com.aftarobot.traffic.library.login.BaseLoginActivity;
-import com.aftarobot.traffic.library.util.Constants;
+import com.aftarobot.traffic.library.data.UserDTO;
+import com.aftarobot.traffic.library.util.SharedUtil;
 import com.aftarobot.traffic.officer.capture.CaptureDriverActivity;
-import com.aftarobot.traffic.officer.services.TicketUploadService;
-import com.google.firebase.crash.FirebaseCrash;
 
-import es.dmoral.toasty.Toasty;
-
-public class MainActivity extends BaseLoginActivity
+public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     Snackbar snackbar;
@@ -37,6 +32,8 @@ public class MainActivity extends BaseLoginActivity
     DrawerLayout drawer;
     NavigationView navigationView;
     FCMData data;
+    UserDTO user;
+    public static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +43,7 @@ public class MainActivity extends BaseLoginActivity
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Traffic Officer");
 
+        user = SharedUtil.getUser(this);
         data = (FCMData)getIntent().getSerializableExtra("data");
         if (data != null) {
             processFCMessage();
@@ -104,32 +102,6 @@ public class MainActivity extends BaseLoginActivity
         startActivityForResult(m, REQUEST_CAPTURE);
     }
 
-    @Override
-    public void userLoggedIn(boolean isFirstTime) {
-        Log.i(TAG, "userLoggedIn: #################............");
-        getLocationPermission();
-        Intent m = new Intent(this, TicketUploadService.class);
-        startService(m);
-        if (isFirstTime) {
-            showSnackBar("Welcome to TrafficOfficer! ", "OK", Constants.GREEN);
-        }
-
-    }
-
-    @Override
-    public void loginFailed() {
-        Log.e(TAG, "loginFailed: -------------------");
-        Toasty.error(this, "Login failed. Please check with your administrator", Toast.LENGTH_SHORT, true).show();
-        FirebaseCrash.report(new Exception("User login failed"));
-        finish();
-    }
-
-    @Override
-    public void loginCancelled() {
-        Log.w(TAG, "loginCancelled: *************");
-        Toasty.warning(this, "Login cancelled", Toast.LENGTH_SHORT, true).show();
-        finish();
-    }
 
     @Override
     public void onBackPressed() {

@@ -74,15 +74,12 @@ public abstract class BaseLoginActivity extends AppCompatActivity implements Log
                 })
                 .build();
 
-        if (auth.getCurrentUser() == null) {
-            listenToAuthChanges();
-            startLogin();
-        } else {
+        if (auth.getCurrentUser() != null) {
             Log.i(TAG, "onCreate: ++++++ user logged in: "
                     .concat(auth.getCurrentUser().getEmail()));
             user = SharedUtil.getUser(this);
             if (user == null) {
-                Log.w(TAG, "$$$$$$$$$$$$$$ onCreate: getting user from Firebase" );
+                Log.w(TAG, "$$$$$$$$$$$$$$ onCreate: getting user from Firebase");
                 loginPresenter.getUserByEmail(auth.getCurrentUser().getEmail());
             } else {
                 Log.i(TAG, "onCreate: ###### cached user found: "
@@ -100,10 +97,8 @@ public abstract class BaseLoginActivity extends AppCompatActivity implements Log
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if (firebaseAuth.getCurrentUser() != null) {
-                    if (SharedUtil.getUser(getApplicationContext()) == null) {
-                        Log.w(TAG, "############ onAuthStateChanged: getting user dto" );
-                        loginPresenter.getUserByEmail(firebaseAuth.getCurrentUser().getEmail());
-                    }
+                    Log.w(TAG, "############ onAuthStateChanged: getting user dto");
+                    loginPresenter.getUserByEmail(firebaseAuth.getCurrentUser().getEmail());
                 }
             }
         });
@@ -157,10 +152,11 @@ public abstract class BaseLoginActivity extends AppCompatActivity implements Log
 
     }
 
-    private void startLogin() {
+    public void startLogin() {
+        listenToAuthChanges();
         startActivityForResult(AuthUI.getInstance().createSignInIntentBuilder()
                 .setIsSmartLockEnabled(!BuildConfig.DEBUG)
-                .setProviders(Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build() ))
+                .setProviders(Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build()))
                 .build(), REQUEST_LOGIN);
     }
 
@@ -170,19 +166,17 @@ public abstract class BaseLoginActivity extends AppCompatActivity implements Log
         Log.i(TAG, "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@onActivityResult: resultCode: " + resultCode);
         if (requestCode == REQUEST_LOGIN) {
             if (resultCode == RESULT_OK) {
-                if (auth.getCurrentUser() != null) {
-                    Log.w(TAG, "onActivityResult: Firebase login OK. current user: ".concat(auth.getCurrentUser().getEmail()) );
-
-                } else {
-                    Log.d(TAG, "onActivityResult: auth.getCurrentUser is null");
-                }
+                Log.w(TAG, "onActivityResult: Firebase login OK. current user: ".concat(auth.getCurrentUser().getEmail()));
                 return;
             }
             if (resultCode == RESULT_CANCELED) {
-                loginFailed();
+                loginFailed(USER_CANCELLED);
                 return;
             }
-            loginCancelled();
+            if (resultCode == RESULT_FIRST_USER) {
+                loginFailed(USER_CANCELLED);
+                return;
+            }
         }
 
     }
@@ -191,7 +185,7 @@ public abstract class BaseLoginActivity extends AppCompatActivity implements Log
     public void onUserFound(UserDTO user) {
         Log.i(TAG, "onUserFound... adding to FCM backend: ".concat(user.getFullName()));
         this.user = user;
-        SharedUtil.saveUser(user,this);
+        SharedUtil.saveUser(user, this);
         FCMUserDTO u = new FCMUserDTO();
         u.setDate(user.getDateRegistered());
         u.setUserID(user.getUserID());
@@ -206,14 +200,15 @@ public abstract class BaseLoginActivity extends AppCompatActivity implements Log
 
 
         loginPresenter.addUserToFCM(u);
-         userLoggedIn(true);
+        userLoggedIn(true);
 
     }
+
     @Override
     public void onUserAddedToFCM(FCMResponseDTO response) {
         if (response.getStatusCode() > 0) {
             FirebaseCrash.report(new Exception(response.getMessage()));
-            SharedUtil.saveFCMStatus(false,getApplicationContext());
+            SharedUtil.saveFCMStatus(false, getApplicationContext());
             userLoggedIn(true);
             return;
         }
@@ -225,23 +220,28 @@ public abstract class BaseLoginActivity extends AppCompatActivity implements Log
         d.setUserID(user.getUserID());
         d.setMessage("Welcome to the best Traffic Officer app in the world!");
         d.setTitle("Welcome to TrafficOfficer");
-        msg.setUserIDs(new ArrayList<String>()) ;
+        msg.setUserIDs(new ArrayList<String>());
         msg.getUserIDs().add(user.getUserID());
         msg.setData(d);
         Log.d(TAG, "onUserAddedToFCM: sending welcome message via FCM");
-        manageTopicSubscriptions(response,user);
+        manageTopicSubscriptions(response, user);
         loginPresenter.sendMessage(msg);
     }
+
     @Override
     public void onMessageSent(FCMResponseDTO response) {
         Log.i(TAG, "onMessageSent: TrafficOfficer FCM message sent OK. Yeaabo!!");
     }
+
+    public static final int FIREBASE_AUTH_FAILED = 7, TRAFFIC_USER_NOT_FOUND = 9, USER_CANCELLED = 11;
+
     @Override
     public void onError(String message) {
         FirebaseCrash.report(new Exception(message));
-        Log.e(TAG, "onError: ".concat(message) );
-        loginFailed();
+        Log.e(TAG, "onError: ".concat(message));
+        loginFailed(FIREBASE_AUTH_FAILED);
     }
+
     private void manageTopicSubscriptions(FCMResponseDTO response, UserDTO user) {
         Log.d(TAG, "manageTopicSubscriptions: CHECK response status and subscribe to topics");
         if (response.getStatusCode() == 0) {
@@ -257,6 +257,7 @@ public abstract class BaseLoginActivity extends AppCompatActivity implements Log
                     response.getMessage());
         }
     }
+
     private void subscribe(UserDTO user) {
         FirebaseMessaging.getInstance().subscribeToTopic("department" + user.getDepartmentID());
         Log.w(TAG, "################# ==> Subscribed to topic department: " + user.getDepartmentName());
@@ -288,7 +289,6 @@ public abstract class BaseLoginActivity extends AppCompatActivity implements Log
      */
     public abstract void userLoggedIn(boolean isFirstTime);
 
-    public abstract void loginFailed();
+    public abstract void loginFailed(int type);
 
-    public abstract void loginCancelled();
 }

@@ -1,0 +1,84 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/back13"
+    tools:context="com.aftarobot.traffic.library.login.LoginFragment">
+
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card1"
+        android:layout_marginRight="@dimen/mon_margin"
+        android:layout_marginLeft="@dimen/mon_margin"
+        android:layout_marginTop="@dimen/mon_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardElevation="@dimen/mon_divider_small">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/mon_wide">
+
+            <ImageView
+                android:id="@+id/icon1"
+                android:src="@drawable/ic_hand"
+                android:layout_alignParentRight="true"
+                android:layout_width="48dp"
+                android:layout_height="48dp" />
+
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Traffic"
+                android:layout_marginBottom="@dimen/mon_wider"
+                android:textColor="@color/teal_300"
+                android:textSize="72sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card2"
+        android:layout_marginTop="@dimen/mon_margin"
+        android:layout_marginRight="@dimen/mon_margin"
+        android:layout_marginLeft="@dimen/mon_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/mon_margin"
+        android:layout_below="@id/card1"
+        app:cardElevation="@dimen/mon_divider_small">
+
+        <RelativeLayout
+            android:padding="@dimen/mon_margin"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/text2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="The best app for Traffic officers! We have the best words...we are actually quite incredible and very tremendous!\n\nWe are also going build a big, beautifule wall and Mexico is gonna pay for it.\n\n... and we have the best fines, too!"
+                android:textColor="@color/blue_gray_500"
+                android:textSize="16sp"
+                android:textStyle="normal" />
+            <Button
+                android:id="@+id/btnLogin"
+                android:text="Start Login"
+                style="?attr/borderlessButtonStyle"
+                android:textColor="?attr/colorAccent"
+                android:layout_marginTop="@dimen/mon_margin"
+                android:layout_below="@id/text2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+
+
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>
