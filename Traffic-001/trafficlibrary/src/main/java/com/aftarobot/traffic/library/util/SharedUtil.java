@@ -8,8 +8,9 @@ import android.util.Log;
 
 import com.aftarobot.traffic.library.data.CityDTO;
 import com.aftarobot.traffic.library.data.CountryDTO;
-import com.aftarobot.traffic.library.data.DeviceDTO;
 import com.aftarobot.traffic.library.data.DepartmentDTO;
+import com.aftarobot.traffic.library.data.DeviceDTO;
+import com.aftarobot.traffic.library.data.TicketDTO;
 import com.aftarobot.traffic.library.data.UserDTO;
 import com.google.gson.Gson;
 
@@ -49,9 +50,9 @@ public class SharedUtil {
         if (json == null) {
             return null;
         }
-        UserDTO u = gson.fromJson(json,UserDTO.class);
+        UserDTO u = gson.fromJson(json, UserDTO.class);
         if (u != null) {
-            Log.w(TAG, "User retrived from cache: ".concat(u.getFullName()) );
+            Log.w(TAG, "User retrived from cache: ".concat(u.getFullName()));
         }
         return u;
     }
@@ -82,7 +83,6 @@ public class SharedUtil {
     }
 
 
-
     public static void saveCloudMsgToken(String token, Context ctx) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ctx);
         SharedPreferences.Editor ed = sp.edit();
@@ -97,6 +97,23 @@ public class SharedUtil {
         String token = sp.getString("token", null);
         return token;
     }
+
+
+    public static void saveFCMStatus(boolean statusIsOK, Context ctx) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ctx);
+        SharedPreferences.Editor ed = sp.edit();
+        ed.putBoolean("fcm", statusIsOK);
+        ed.commit();
+        Log.d(TAG, "saveFCMStatus: " + statusIsOK);
+    }
+
+    public static boolean getFCMStatus(Context ctx) {
+        if (ctx == null) return false;
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ctx);
+        boolean ok = sp.getBoolean("fcm",false);
+        return ok;
+    }
+
 
     public static void saveAccount(String token, Context ctx) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ctx);
@@ -177,7 +194,8 @@ public class SharedUtil {
         }
         return gson.fromJson(json, DeviceDTO.class);
     }
-     /**
+
+    /**
      * Utility method that erases cached contacts that have expired.
      * The same technique can be used, for instance, to get rid of old "remembered" logins
      */
@@ -265,7 +283,7 @@ public class SharedUtil {
         }
     }
 
-       public static void saveCountry(CountryDTO country, Context ctx) {
+    public static void saveCountry(CountryDTO country, Context ctx) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ctx);
         SharedPreferences.Editor ed = sp.edit();
         String json = gson.toJson(country);
@@ -288,6 +306,34 @@ public class SharedUtil {
             return t;
         } catch (Exception e) {
             Log.e(TAG, "?????????? getCountry: unable to parse country");
+            return null;
+        }
+
+    }
+
+    public static void saveTicket(TicketDTO t, Context ctx) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ctx);
+        SharedPreferences.Editor ed = sp.edit();
+        String json = gson.toJson(t);
+        ed.putString("ticket", json);
+        ed.commit();
+        Log.d(TAG, "################################# saveTicket" +
+                " on disk: " + t.getTicketNumber());
+    }
+
+    public static TicketDTO getTicket(Context ctx) {
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ctx);
+        String json = sp.getString("ticket", null);
+        if (json == null) {
+            return null;
+        }
+        try {
+            TicketDTO t = gson.fromJson(json, TicketDTO.class);
+            Log.i(TAG, "************************* getTicket: retrieved: " + t.getTicketNumber());
+            return t;
+        } catch (Exception e) {
+            Log.e(TAG, "?????????? getCountry: unable to parse ticket");
             return null;
         }
 

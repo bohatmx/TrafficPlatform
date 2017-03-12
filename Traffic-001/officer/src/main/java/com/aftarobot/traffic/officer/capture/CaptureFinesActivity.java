@@ -4,8 +4,11 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -24,15 +27,23 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aftarobot.traffic.library.api.FineCache;
+import com.aftarobot.traffic.library.api.TicketCache;
 import com.aftarobot.traffic.library.data.FineDTO;
+import com.aftarobot.traffic.library.data.TicketDTO;
+import com.aftarobot.traffic.library.util.Constants;
 import com.aftarobot.traffic.officer.R;
+import com.aftarobot.traffic.officer.services.TicketUploadService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.joda.time.DateTime;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 public class CaptureFinesActivity extends AppCompatActivity implements FinesContract.View {
 
@@ -54,6 +65,8 @@ public class CaptureFinesActivity extends AppCompatActivity implements FinesCont
     private CardView fineCard;
     boolean cacheNeeded;
     FloatingActionButton fab;
+    private TicketDTO ticket;
+    public static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     public static final String TAG = CaptureFinesActivity.class.getSimpleName();
 
     @Override
@@ -64,6 +77,10 @@ public class CaptureFinesActivity extends AppCompatActivity implements FinesCont
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Traffic Officer");
         getSupportActionBar().setSubtitle("Driver Detail Capture");
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+        ticket = (TicketDTO) getIntent().getSerializableExtra("ticket");
 
         setup();
 
@@ -79,7 +96,7 @@ public class CaptureFinesActivity extends AppCompatActivity implements FinesCont
                 Log.d(TAG, "onDataRead: found fines in cache: " + list.size());
                 fines = list;
                 if (fines.isEmpty()) {
-                    Log.w(TAG, "onDataRead: cache empty, getting fines" );
+                    Log.w(TAG, "onDataRead: cache empty, getting fines");
                     cacheNeeded = true;
                     presenter.getFines();
                 } else {
@@ -90,7 +107,7 @@ public class CaptureFinesActivity extends AppCompatActivity implements FinesCont
                     DateTime dt = new DateTime().minusDays(10);
                     Log.w(TAG, "onDataRead: dt: " + dt.getMillis() + " ### f.cachedate: " + f.getCacheDate());
                     if (f.getCacheDate() < dt.getMillis()) {
-                        Log.e(TAG, "onDataRead: cache expired, getting fines" );
+                        Log.e(TAG, "onDataRead: cache expired, getting fines");
                         cacheNeeded = true;
                         presenter.getFines();
                     }
@@ -100,7 +117,7 @@ public class CaptureFinesActivity extends AppCompatActivity implements FinesCont
 
             @Override
             public void onError(String message) {
-                Log.e(TAG, "onError: ".concat(message) );
+                Log.e(TAG, "onError: ".concat(message));
             }
         });
     }
@@ -153,28 +170,83 @@ public class CaptureFinesActivity extends AppCompatActivity implements FinesCont
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                 confirm();
+                confirm();
             }
         });
     }
-     private void confirm() {
-         AlertDialog.Builder d = new AlertDialog.Builder(this);
-         d.setTitle("Confirmation")
-                 .setMessage("Would you like complete the process of handling the fine?")
-                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                     @Override
-                     public void onClick(DialogInterface dialogInterface, int i) {
 
-                     }
-                 })
-                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                     @Override
-                     public void onClick(DialogInterface dialogInterface, int i) {
+    private void confirm() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Driver: ").append(ticket.getFirstName())
+                .append(" ").append(ticket.getLastName()).append("\n\n");
+        double total = 0;
+        for (FineDTO f: selectedFines) {
+            total += f.getFine();
+            sb.append(f.getCode()).append(" ").append(f.getCode())
+                    .append(" - R").append(f.getFine()).append("\n");
+        }
+        sb.append("\nTotal Amount: ").append(" R").append(total)
+                .append("\n\n");
+        AlertDialog.Builder d = new AlertDialog.Builder(this);
+        d.setTitle("Ticket Confirmation")
+                .setMessage("Would you like complete the process of issuing the ticket?\n\n"
+                        .concat(sb.toString()))
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        uploadTicket();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
 
-                     }
-                 })
-                 .show();
-     }
+                    }
+                })
+                .show();
+    }
+
+    private void uploadTicket() {
+        if (ticket.getFines() == null) {
+            ticket.setFines(new HashMap<String, FineDTO>());
+        }
+        showSnackBar("Traffic fine has been processed. Thank you", "OK", Constants.GREEN);
+        for (FineDTO f : selectedFines) {
+            ticket.getFines().put(UUID.randomUUID().toString(), f);
+        }
+        Log.d(TAG, "uploadTicket, about to cache: ".concat(gson.toJson(ticket)));
+        TicketCache.addTicket(ticket, this, new TicketCache.WriteListener() {
+            @Override
+            public void onDataWritten() {
+                startTicketService();
+                onBackPressed();
+            }
+
+            @Override
+            public void onError(String message) {
+
+            }
+        });
+    }
+
+    private void startTicketService() {
+        Intent m = new Intent(this, TicketUploadService.class);
+        startService(m);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.w(TAG, "onBackPressed: **************************" );
+        if (!ticket.getFines().isEmpty()) {
+            Intent m = new Intent();
+            m.putExtra("ticket", ticket);
+            setResult(RESULT_OK, m);
+        } else {
+            setResult(RESULT_CANCELED);
+        }
+        finish();
+    }
+
     @Override
     public void onFinesFound(List<FineDTO> list) {
         Log.i(TAG, "onFinesFound: " + list.size());
@@ -211,11 +283,38 @@ public class CaptureFinesActivity extends AppCompatActivity implements FinesCont
         finesItemAdapter = new FinesItemAdapter(selectedFines, this, new FinesItemAdapter.FinesItemListener() {
             @Override
             public void onRemoveFineRequested(FineDTO f) {
-                removeSelectedFine(f);
+                confirmDeletion(f);
             }
         });
         recyclerView.setAdapter(finesItemAdapter);
         setTotals();
+    }
+
+    private void confirmDeletion(final FineDTO fine) {
+        AlertDialog.Builder b = new AlertDialog.Builder(this);
+        StringBuilder sb = new StringBuilder();
+        sb.append("CODE: ").append(fine.getCode()).append(" - ");
+        if (fine.getRegulation().length() > 1) {
+            sb.append(fine.getRegulation());
+        } else {
+            sb.append(fine.getSection());
+        }
+        sb.append("  R").append(df.format(fine.getFine()));
+        b.setTitle("Confirmation")
+                .setMessage("Do you really want to remove this fine from the ticket?\n\n".concat(sb.toString()))
+                .setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        removeSelectedFine(fine);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                })
+                .show();
     }
 
     private void setCard() {
@@ -321,5 +420,24 @@ public class CaptureFinesActivity extends AppCompatActivity implements FinesCont
         });
         an.start();
 
+    }
+
+    Snackbar snackbar;
+
+    public void showSnackBar(String title, String action, String color) {
+        snackbar = Snackbar.make(toolbar, title, Snackbar.LENGTH_INDEFINITE);
+        snackbar.setActionTextColor(Color.parseColor(color));
+        snackbar.setAction(action, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                snackbar.dismiss();
+            }
+        });
+        snackbar.show();
+    }
+
+    public void showSnackBar(String title) {
+        snackbar = Snackbar.make(toolbar, title, Snackbar.LENGTH_SHORT);
+        snackbar.show();
     }
 }

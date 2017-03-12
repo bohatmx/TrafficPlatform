@@ -7,7 +7,7 @@
     android:layout_marginRight="@dimen/mon_margin"
     android:layout_marginTop="@dimen/mon_padding"
     android:padding="@dimen/mon_margin"
-    app:cardElevation="@dimen/mon_divider">
+    app:cardElevation="@dimen/mon_divider_small">
 
     <RelativeLayout
         android:padding="@dimen/mon_margin"
@@ -72,7 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/lay1"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <TextView
                     android:id="@+id/txtCharge"
@@ -97,7 +97,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:text="DELETE FINE FROM TICKET"
-                        android:textColor="@color/red_800"
+                        android:textColor="?attr/colorAccent"
                         android:textStyle="bold" />
                 </RelativeLayout>
             </RelativeLayout>

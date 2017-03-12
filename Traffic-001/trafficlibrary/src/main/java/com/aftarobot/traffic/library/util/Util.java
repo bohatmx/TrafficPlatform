@@ -21,7 +21,6 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.media.ExifInterface;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
@@ -39,7 +38,6 @@ import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.TextView;
 
-import com.aftarobot.traffic.library.data.DeviceDTO;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -54,7 +52,6 @@ import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -62,7 +59,6 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.regex.Pattern;
 
 
 /**
@@ -75,6 +71,39 @@ public class Util {
     public static final long TWO_MINUTES = 1000L * 60L * 60L * 2L;
 
     static Snackbar snackbar;
+    public static Bitmap resizeBitMapImage(String filePath, int targetWidth, int targetHeight) {
+        Bitmap bitMapImage = null;
+        try {
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(filePath, options);
+            double sampleSize = 0;
+            Boolean scaleByHeight = Math.abs(options.outHeight - targetHeight) >= Math.abs(options.outWidth
+                    - targetWidth);
+            if (options.outHeight * options.outWidth * 2 >= 1638) {
+                sampleSize = scaleByHeight ? options.outHeight / targetHeight : options.outWidth / targetWidth;
+                sampleSize = (int) Math.pow(2d, Math.floor(Math.log(sampleSize) / Math.log(2d)));
+            }
+            options.inJustDecodeBounds = false;
+            options.inTempStorage = new byte[128];
+            while (true) {
+                try {
+                    options.inSampleSize = (int) sampleSize;
+                    bitMapImage = BitmapFactory.decodeFile(filePath, options);
+                    break;
+                } catch (Exception ex) {
+                    try {
+                        sampleSize = sampleSize * 2;
+                    } catch (Exception ex1) {
+
+                    }
+                }
+            }
+        } catch (Exception ex) {
+
+        }
+        return bitMapImage;
+    }
 
     public static byte[] toByteArray(String s) {
         return Base64.decode(s, Base64.DEFAULT);
@@ -1016,16 +1045,16 @@ public class Util {
     }
 
 
-    public static void writeLocationToExif(String filePath, Location loc) {
+    public static void writeLocationToExif(String filePath, double latitude, double longitude) {
         try {
             ExifInterface ef = new ExifInterface(filePath);
-            ef.setAttribute(ExifInterface.TAG_GPS_LATITUDE, decimalToDMS(loc.getLatitude()));
-            ef.setAttribute(ExifInterface.TAG_GPS_LONGITUDE, decimalToDMS(loc.getLongitude()));
-            if (loc.getLatitude() > 0)
+            ef.setAttribute(ExifInterface.TAG_GPS_LATITUDE, decimalToDMS(latitude));
+            ef.setAttribute(ExifInterface.TAG_GPS_LONGITUDE, decimalToDMS(longitude));
+            if (latitude > 0)
                 ef.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF, "N");
             else
                 ef.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF, "S");
-            if (loc.getLongitude() > 0)
+            if (longitude > 0)
                 ef.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, "E");
             else
                 ef.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, "W");
@@ -1206,13 +1235,6 @@ public class Util {
         an.start();
     }
 
-    public static void animateSlideRight(View view, long duration) {
-        final ObjectAnimator an = ObjectAnimator.ofInt(
-                view, "translate", 0, 100, 0, 100);
-        an.setDuration(duration);
-        an.setInterpolator(new AccelerateDecelerateInterpolator());
-        an.start();
-    }
 
 
     public static ArrayList<String> getRecurStrings(Date date) {

@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.aftarobot.admin.R;
 import com.aftarobot.traffic.library.data.DepartmentDTO;
 import com.aftarobot.traffic.library.data.UserDTO;
+import com.aftarobot.traffic.library.util.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,7 +125,7 @@ public class UserAdminActivity extends AppCompatActivity implements UserContract
         user.setDepartmentName(department.getDepartmentName());
         user.setDepartmentID(department.getDepartmentID());
 
-        showSnackBar("Sending user data ...","OK","yellow");
+        showSnackBar("Sending user data ...","OK",Constants.YELLOW);
         userPresenter.addUser(user);
     }
     int userType;
@@ -168,7 +169,7 @@ public class UserAdminActivity extends AppCompatActivity implements UserContract
     @Override
     public void onUserAdded(String key) {
         snackbar.dismiss();
-        showSnackBar("User added","OK","green");
+        showSnackBar("User added","OK", Constants.GREEN);
         Toasty.success(this,"User has been added", Toast.LENGTH_SHORT).show();
     }
 

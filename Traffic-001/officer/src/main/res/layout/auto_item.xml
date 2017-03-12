@@ -1,61 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="@dimen/mon_divider_small"
+    android:layout_marginTop="@dimen/mon_divider_small"
+    android:layout_marginLeft="@dimen/mon_divider"
+    android:layout_marginRight="@dimen/mon_divider"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/amber_100"
-    android:padding="@dimen/mon_margin">
-
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_hand" />
+    android:layout_height="wrap_content">
 
     <RelativeLayout
+        android:padding="@dimen/mon_margin"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/mon_margin"
-        android:layout_toRightOf="@id/image">
+        android:layout_height="wrap_content">
 
-        <RelativeLayout
-            android:id="@+id/lay1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/txtCode"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="CODE" />
-            <TextView
-                android:id="@+id/txtReg"
-                android:layout_toRightOf="@id/txtCode"
-                android:layout_marginLeft="@dimen/mon_margin"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="REGULATION" />
-            <TextView
-                android:id="@+id/txtAmount"
-                android:layout_toRightOf="@id/txtReg"
-                android:layout_marginLeft="@dimen/mon_margin"
-                android:textStyle="bold"
-                android:textColor="@color/teal_800"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1500.00" />
-        </RelativeLayout>
-        <TextView
-            android:id="@+id/txtCharge"
-            android:layout_below="@id/lay1"
-            android:maxLength="180"
-            android:minLines="1"
-            android:maxLines="5"
+        <ImageView
+            android:id="@+id/image"
+            android:tint="?attr/colorAccent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="of the charge will come hereSome of the charge will come hereSome of the charge will come hereSome of the charge will come hereSome of the charge will come here" />
-    </RelativeLayout>
+            android:src="@drawable/ic_hand" />
 
-</RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/mon_margin"
+            android:layout_toRightOf="@id/image">
+
+            <RelativeLayout
+                android:id="@+id/lay1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txtCode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CODE"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtReg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/mon_margin"
+                    android:layout_toRightOf="@id/txtCode"
+                    android:text="REGULATION"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/mon_margin"
+                    android:layout_toRightOf="@id/txtReg"
+                    android:text="1500.00"
+                    android:textColor="@color/teal_800"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/txtCharge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lay1"
+                android:maxLength="180"
+                android:maxLines="5"
+                android:minLines="1"
+                android:text="of the charge will come hereSome of the charge will come hereSome of the charge will come hereSome of the charge will come hereSome of the charge will come here" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/mon_margin"
         android:padding="@dimen/mon_margin"
-        app:cardElevation="@dimen/mon_padding">
+        app:cardElevation="@dimen/mon_divider">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -118,7 +118,7 @@
         android:layout_below="@id/card1"
         android:layout_marginLeft="@dimen/mon_margin"
         android:layout_marginRight="@dimen/mon_margin"
-        app:cardElevation="@dimen/mon_padding">
+        app:cardElevation="@dimen/mon_divider_small">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -187,6 +187,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:text="Done"
+                    android:visibility="gone"
                     android:textColor="@color/blue_800" />
             </RelativeLayout>
         </RelativeLayout>

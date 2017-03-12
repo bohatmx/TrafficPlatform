@@ -96,6 +96,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "772668757353-4k4ag1qd7rk019ootq6dosr5ogmht535.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aftarobot.admin",
+            "certificate_hash": "3ef3aad7b9b47122a7f0cd4f8974846a928c99e0"
+          }
+        },
+        {
           "client_id": "772668757353-tt6kqscq7tfk07o9n9jurs3remlqoks4.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -113,8 +121,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "772668757353-tt6kqscq7tfk07o9n9jurs3remlqoks4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

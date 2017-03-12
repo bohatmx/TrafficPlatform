@@ -13,6 +13,8 @@ import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
 import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 
@@ -34,57 +36,158 @@ public class TrafficEndpointAPI {
             SEND_MESSAGE = 2,
             SEND_ADMIN_TOPIC = 3,
             SEND_OFFICERS_TOPIC = 4,
-            SEND_DEPARTMENT_MESSAGE = 5;
+            SEND_DEPARTMENT_TOPIC = 5;
 
     public void saveUser(FCMUserDTO user, TrafficEndpointListener listener) {
-        new MTask(user, listener);
+        new SaveUserTask(user, listener).execute();
     }
 
     public void sendMessage(FCMessageDTO message, TrafficEndpointListener listener) {
-        new MTask(message, listener).execute();
+        new SendMessageTask(message, listener).execute();
     }
     public void sendDepartmentMessage(String departmentID, PayLoad payLoad, TrafficEndpointListener listener) {
-        new MTask(departmentID,payLoad, SEND_DEPARTMENT_MESSAGE);
+        new SendTopicTask(departmentID,payLoad, SEND_DEPARTMENT_TOPIC).execute();
     }
     public void sendOfficersMessage(String departmentID, PayLoad payLoad, TrafficEndpointListener listener) {
-        new MTask(departmentID,payLoad, SEND_OFFICERS_TOPIC);
+        new SendTopicTask(departmentID,payLoad, SEND_OFFICERS_TOPIC).execute();
     }
     public void sendAdminsMessage(String departmentID, PayLoad payLoad, TrafficEndpointListener listener) {
-        new MTask(departmentID,payLoad, SEND_ADMIN_TOPIC);
+        new SendTopicTask(departmentID,payLoad, SEND_ADMIN_TOPIC).execute();
     }
 
-    private class MTask extends AsyncTask<Void, Void, Integer> {
+    private class SaveUserTask extends AsyncTask<Void, Void, Integer> {
+
+        TrafficApi trafficApi;
+        FCMUserDTO user;
+        TrafficEndpointListener listener;
+        FCMResponseDTO response;
+
+
+        public SaveUserTask(FCMUserDTO user, TrafficEndpointListener listener) {
+            this.user = user;
+            this.listener = listener;
+        }
+
+        @Override
+        protected Integer doInBackground(Void... voids) {
+            Log.d(TAG, "################# doInBackground: ................... fcm starting");
+            if (trafficApi == null) {
+                TrafficApi.Builder builder = new TrafficApi.Builder(AndroidHttp.newCompatibleTransport(),
+                        new AndroidJsonFactory(), null)
+                        // options for running against local devappserver
+                        // - 10.0.2.2 is localhost's IP address in Android emulator
+                        // - turn off compression when running against local devappserver
+                        .setRootUrl(Constants.APP_ENGINE_ROOT_URL)
+                        .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
+                            @Override
+                            public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
+                                //todo - set false when in production
+                                abstractGoogleClientRequest.setDisableGZipContent(true);
+                            }
+                        });
+
+                trafficApi = builder.build();
+            }
+
+            try {
+                response = trafficApi.saveUser(user).execute();
+                Log.d(TAG, "response from saveUser: ".concat(GSON.toJson(response)));
+            } catch (Exception e) {
+                Log.e(TAG, "doInBackground: fcm error", e);
+                return 9;
+            }
+
+
+            return 0;
+        }
+        @Override
+        protected void onPostExecute(Integer result) {
+            Log.i(TAG, "onPostExecute: fcm responded");
+            if (result > 0) {
+                listener.onError("Failed to send FCM message");
+            } else {
+                listener.onResponse(response);
+            }
+        }
+    }
+
+    private class SendMessageTask extends AsyncTask<Void, Void, Integer> {
 
         TrafficApi trafficApi;
         FCMessageDTO fcMessage;
-        FCMUserDTO user;
         TrafficEndpointListener listener;
-        int type;
+        FCMResponseDTO response;
+
+
+        public SendMessageTask(FCMessageDTO fcMessage, TrafficEndpointListener listener) {
+            this.fcMessage = fcMessage;
+            this.listener = listener;
+        }
+
+
+
+        @Override
+        protected Integer doInBackground(Void... voids) {
+            Log.d(TAG, "################# doInBackground: ................... fcm starting");
+            if (trafficApi == null) {
+                TrafficApi.Builder builder = new TrafficApi.Builder(AndroidHttp.newCompatibleTransport(),
+                        new AndroidJsonFactory(), null)
+                        // options for running against local devappserver
+                        // - 10.0.2.2 is localhost's IP address in Android emulator
+                        // - turn off compression when running against local devappserver
+                        .setRootUrl(Constants.APP_ENGINE_ROOT_URL)
+                        .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
+                            @Override
+                            public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
+                                //todo - set false when in production
+                                abstractGoogleClientRequest.setDisableGZipContent(true);
+                            }
+                        });
+
+                trafficApi = builder.build();
+            }
+            response = new FCMResponseDTO();
+            try {
+                response = trafficApi.sendMessage(fcMessage).execute();
+                Log.d(TAG, "response from send message: ".concat(GSON.toJson(response)));
+            } catch (Exception e) {
+                Log.e(TAG, "doInBackground: fcm error", e);
+                return 9;
+            }
+
+
+            return 0;
+        }
+        @Override
+        protected void onPostExecute(Integer result) {
+            Log.i(TAG, "onPostExecute: fcm responded");
+            if (result > 0) {
+                listener.onError("Failed to send FCM message");
+            } else {
+                listener.onResponse(response);
+            }
+        }
+    }
+
+    private class SendTopicTask extends AsyncTask<Void, Void, Integer> {
+
+        TrafficApi trafficApi;
+        TrafficEndpointListener listener;
         FCMResponseDTO response;
         String departmentID;
         PayLoad payLoad;
+        int type;
 
-        public MTask(String departmentID, PayLoad payLoad, int type) {
+        public SendTopicTask(String departmentID, PayLoad payLoad, int type) {
             this.departmentID = departmentID;
             this.payLoad = payLoad;
             this.type = type;
         }
 
-        public MTask(FCMessageDTO fcMessage, TrafficEndpointListener listener) {
-            this.fcMessage = fcMessage;
-            this.listener = listener;
-            type = SEND_MESSAGE;
-        }
-
-        public MTask(FCMUserDTO user, TrafficEndpointListener listener) {
-            this.user = user;
-            this.listener = listener;
-            type = SAVE_USER;
-        }
 
         @Override
         protected Integer doInBackground(Void... voids) {
-            Log.d(TAG, "doInBackground: ................... fcm starting");
+            Log.d(TAG, "################# doInBackground: ................... fcm starting");
             if (trafficApi == null) {
                 TrafficApi.Builder builder = new TrafficApi.Builder(AndroidHttp.newCompatibleTransport(),
                         new AndroidJsonFactory(), null)
@@ -105,19 +208,17 @@ public class TrafficEndpointAPI {
             response = new FCMResponseDTO();
             try {
                 switch (type) {
-                    case SAVE_USER:
-                        response = trafficApi.saveUser(user).execute();
-                        break;
-                    case SEND_MESSAGE:
-                        response = trafficApi.sendMessage(fcMessage).execute();
-                        break;
                     case SEND_ADMIN_TOPIC:
                         response = trafficApi.sendAdminsMessage(departmentID, payLoad).execute();
                         break;
                     case SEND_OFFICERS_TOPIC:
                         response = trafficApi.sendOfficersMessage(departmentID, payLoad).execute();
                         break;
+                    case SEND_DEPARTMENT_TOPIC:
+                        response = trafficApi.sendDepartmentMessage(departmentID, payLoad).execute();
+                        break;
                 }
+                Log.d(TAG, "response from topic message: ".concat(GSON.toJson(response)));
             } catch (Exception e) {
                 Log.e(TAG, "doInBackground: fcm error", e);
                 return 9;
@@ -137,5 +238,6 @@ public class TrafficEndpointAPI {
         }
     }
 
+    public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     public static final String TAG = TrafficEndpointAPI.class.getSimpleName();
 }

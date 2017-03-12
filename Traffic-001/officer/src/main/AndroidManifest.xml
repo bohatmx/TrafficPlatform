@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <!-- API KEY, DEBUG: AIzaSyDcRalx9IJAw006svcwHsyHRoTm8dD7njE -->
     <application
@@ -14,7 +15,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:theme="@style/MarshalTheme">
+        android:theme="@style/CommuterTheme">
         <meta-data
             android:name="com.google.android.awareness.API_KEY"
             android:value="@string/officer_api_key" />
@@ -27,8 +28,7 @@
 
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/OwnerTheme">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,6 +36,7 @@
             </intent-filter>
         </activity>
 
+        <!-- SERVICES FOR FIREBASE CLOUD MESSAGING -->
         <service
             android:name=".services.OfficerInstanceIDService"
             android:exported="false">
@@ -48,7 +49,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
+        <!-- ACTIVITIES -->
         <activity
             android:name="com.afollestad.materialcamera.CaptureActivity"
             android:theme="@style/MaterialCamera.CaptureActivity" />
@@ -57,20 +58,29 @@
             android:theme="@style/MaterialCamera.CaptureActivity" />
         <activity
             android:name=".capture.CaptureDriverActivity"
+            android:label="@string/title_activity_capture_driver"
+            android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:label="@string/title_activity_capture_driver" />
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity android:name=".capture.CameraActivity" />
         <activity
             android:name=".capture.CaptureFinesActivity"
             android:label="@string/title_activity_capture_fines"
-            android:windowSoftInputMode="stateAlwaysHidden"
+            android:parentActivityName=".capture.CaptureDriverActivity"
             android:screenOrientation="portrait"
-            android:parentActivityName=".capture.CaptureDriverActivity">
+            android:windowSoftInputMode="stateAlwaysHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.aftarobot.traffic.officer.capture.CaptureDriverActivity" />
         </activity>
+
+        <service
+            android:name=".services.TicketUploadService"
+            android:exported="false" />
+
+        <activity
+            android:name=".NotifHandlerActivity"
+            android:label="@string/title_activity_notif_handler"></activity>
     </application>
 
 </manifest>

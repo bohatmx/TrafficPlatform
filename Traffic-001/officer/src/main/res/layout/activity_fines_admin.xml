@@ -20,7 +20,10 @@
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <RelativeLayout
-                android:padding="@dimen/mon_margin"
+                android:paddingBottom="@dimen/mon_wide"
+                android:paddingRight="@dimen/mon_margin"
+                android:paddingTop="@dimen/mon_margin"
+                android:paddingLeft="@dimen/mon_margin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
@@ -34,19 +37,20 @@
                     android:text="Traffic Fine Selection"
                     android:layout_below="@id/txtTitle"
                     android:textColor="@color/white"
+                    android:layout_marginTop="@dimen/mon_divider"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <ImageView
-                    android:id="@+id/iconCancelx"
-                    android:src="@drawable/ic_cancel_white"
+                    android:id="@+id/iconCamera"
+                    android:src="@drawable/ic_camera_alt_white"
                     android:layout_alignParentRight="true"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <RelativeLayout
                     android:layout_below="@id/txtSubTitle"
                     android:layout_width="match_parent"
-                    android:layout_marginTop="@dimen/mon_margin"
+                    android:layout_marginTop="@dimen/mon_divider"
                     android:layout_marginBottom="@dimen/mon_padding"
                     android:layout_height="wrap_content">
                     <TextView

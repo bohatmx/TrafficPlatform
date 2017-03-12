@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.aftarobot.admin.R;
 import com.aftarobot.traffic.library.data.DepartmentDTO;
 import com.aftarobot.traffic.library.data.ResponseBag;
+import com.aftarobot.traffic.library.util.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,7 +101,7 @@ public class DepartmentAdminActivity extends AppCompatActivity implements DeptLi
         department.setEmail(editEmail.getText().toString());
         department.setCityName(editCity.getText().toString());
 
-        showSnackBar("Sending department to database", "OK", "cyan");
+        showSnackBar("Sending department to database", "OK", Constants.CYAN);
         presenter.addDepartment(department);
     }
 
@@ -140,7 +141,7 @@ public class DepartmentAdminActivity extends AppCompatActivity implements DeptLi
 
     @Override
     public void onError(String message) {
-         showSnackBar(message,"bad","red");
+         showSnackBar(message,"bad", Constants.RED);
     }
 
     Snackbar snackbar;

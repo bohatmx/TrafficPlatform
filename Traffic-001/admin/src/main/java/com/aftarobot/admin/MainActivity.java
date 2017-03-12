@@ -102,7 +102,7 @@ public class MainActivity extends BaseLoginActivity
     }
 
     @Override
-    public void userLoggedIn() {
+    public void userLoggedIn(boolean isFirstTime) {
         Log.i(TAG, "userLoggedIn: building pages in viewpager...");
         Toasty.success(this, "You have been logged in", Toast.LENGTH_SHORT, true).show();
         if (user != null) {

@@ -8,12 +8,15 @@ import java.util.Date;
  * Created by aubreymalabie on 2/23/17.
  */
 
-public class PhotoDTO implements Serializable{
+public class VideoDTO implements Serializable{
 
-    private String photoID, ticketID, userID,caption, url,
+    private String videoID, ticketID, userID,caption, url, format, frameRate, bitRate,
     localFilePath, stringDateTaken, stringDateUploaded;
     private int type, height, width, bytes;
+    private double duration;
     private Long dateTaken, dateUploaded;
+    private AudioDTO audio;
+    private VideoMetadataDTO videoMetadata;
     private static final SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd MMMM yyyy HH:mm:ss");
     public static final int
             TRAFFIC_FINE = 1,
@@ -23,9 +26,57 @@ public class PhotoDTO implements Serializable{
             ORIENTATION_PORTRAIT = 5,
             ORIENTATION_LANDSCAPE = 6;
 
-    public PhotoDTO() {
+    public VideoDTO() {
         dateTaken = new Date().getTime();
         stringDateTaken = sdf.format(new Date());
+    }
+
+    public String getFormat() {
+        return format;
+    }
+
+    public void setFormat(String format) {
+        this.format = format;
+    }
+
+    public String getFrameRate() {
+        return frameRate;
+    }
+
+    public void setFrameRate(String frameRate) {
+        this.frameRate = frameRate;
+    }
+
+    public String getBitRate() {
+        return bitRate;
+    }
+
+    public void setBitRate(String bitRate) {
+        this.bitRate = bitRate;
+    }
+
+    public double getDuration() {
+        return duration;
+    }
+
+    public void setDuration(double duration) {
+        this.duration = duration;
+    }
+
+    public AudioDTO getAudio() {
+        return audio;
+    }
+
+    public void setAudio(AudioDTO audio) {
+        this.audio = audio;
+    }
+
+    public VideoMetadataDTO getVideoMetadata() {
+        return videoMetadata;
+    }
+
+    public void setVideoMetadata(VideoMetadataDTO videoMetadata) {
+        this.videoMetadata = videoMetadata;
     }
 
     public String getUserID() {
@@ -76,12 +127,12 @@ public class PhotoDTO implements Serializable{
         this.localFilePath = localFilePath;
     }
 
-    public String getPhotoID() {
-        return photoID;
+    public String getVideoID() {
+        return videoID;
     }
 
-    public void setPhotoID(String photoID) {
-        this.photoID = photoID;
+    public void setVideoID(String videoID) {
+        this.videoID = videoID;
     }
 
     public String getCaption() {

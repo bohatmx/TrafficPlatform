@@ -62,7 +62,7 @@ public class TrafficEndpoint {
 
     private static final Logger log = Logger.getLogger(TrafficEndpoint.class.getName());
     public static final String FCM_URL = "https://fcm.googleapis.com/fcm/send",
-            API_KEY = "AIzaSyBgxOPDBpesoAY3EFvJpT0LA22fPbgbg3Q";
+            SERVER_KEY = "AIzaSyB1mSPnJeJeDkU1_YvhejVN6XkVV48vBTo";
     public static final Gson gson = new Gson();
     public static final String CONTENT_TYPE = "application/json; charset=UTF-8";
 
@@ -151,7 +151,7 @@ public class TrafficEndpoint {
             URLFetchService url_service = URLFetchServiceFactory.getURLFetchService();
             HTTPRequest request = new HTTPRequest(new URL(FCM_URL), HTTPMethod.POST);
             request.setHeader(new HTTPHeader("Content-Type", CONTENT_TYPE));
-            request.setHeader(new HTTPHeader("Authorization", "key=" + API_KEY));
+            request.setHeader(new HTTPHeader("Authorization", "key=" + SERVER_KEY));
             request.setPayload(json.getBytes("UTF-8"));
             HTTPResponse response = url_service.fetch(request);
             if (response.getResponseCode() != 200) {
@@ -284,7 +284,7 @@ public class TrafficEndpoint {
             URLFetchService url_service = URLFetchServiceFactory.getURLFetchService();
             HTTPRequest request = new HTTPRequest(new URL(FCM_URL), HTTPMethod.POST);
             request.setHeader(new HTTPHeader("Content-Type", CONTENT_TYPE));
-            request.setHeader(new HTTPHeader("Authorization", "key=" + API_KEY));
+            request.setHeader(new HTTPHeader("Authorization", "key=" + SERVER_KEY));
             request.setPayload(json.getBytes("utf8"));
             HTTPResponse response = url_service.fetch(request);
             if (response.getResponseCode() != 200) {
