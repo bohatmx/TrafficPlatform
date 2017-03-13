@@ -1,1 +1,1 @@
-include ':officer', ':trafficlibrary', ':internalAdmin', ':backend'
+include ':officer', ':trafficlibrary', ':internalAdmin', ':backend', ':departmentadmin'

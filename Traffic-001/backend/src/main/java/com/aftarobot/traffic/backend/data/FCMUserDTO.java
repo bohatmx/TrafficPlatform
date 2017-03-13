@@ -14,7 +14,7 @@ import java.io.Serializable;
 public class FCMUserDTO implements Serializable{
 
 
-    @Id Long id;
+    @Id String fcmID;
     @Index String userID;
     @Index String serialNumber;
     @Index String departmentID;
@@ -22,6 +22,18 @@ public class FCMUserDTO implements Serializable{
     String firstName, lastName, token, departmentName;
     Long date;
     String deviceModel, androidVersion, manufacturer;
+
+    public String getFcmID() {
+        return fcmID;
+    }
+
+    public void setFcmID(String fcmID) {
+        if (fcmID != null && fcmID.length() > 0) {
+            this.fcmID = fcmID;
+            return;
+        }
+        this.fcmID = userID;
+    }
 
     public String getDepartmentName() {
         return departmentName;
@@ -33,14 +45,6 @@ public class FCMUserDTO implements Serializable{
 
     public String getFullName() {
         return firstName.concat(" ").concat(lastName);
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getUserID() {

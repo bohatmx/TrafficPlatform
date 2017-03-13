@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,6 +17,7 @@ import com.aftarobot.traffic.backend.trafficApi.model.FCMUserDTO;
 import com.aftarobot.traffic.backend.trafficApi.model.FCMessageDTO;
 import com.aftarobot.traffic.library.data.UserDTO;
 import com.aftarobot.traffic.library.util.SharedUtil;
+import com.aftarobot.traffic.library.util.Util;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.BuildConfig;
 import com.google.android.gms.awareness.Awareness;
@@ -46,7 +46,7 @@ public abstract class BaseLoginActivity extends AppCompatActivity implements Log
     public static final int REQUEST_LOGIN = 7657, REQUEST_LOCATION_AND_STORAGE = 7253;
     public static final String TAG = BaseLoginActivity.class.getSimpleName();
 
-
+    public boolean firebaseOK, isFirstTime = false, isStaff;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate: ....########..........");
@@ -77,6 +77,11 @@ public abstract class BaseLoginActivity extends AppCompatActivity implements Log
         if (auth.getCurrentUser() != null) {
             Log.i(TAG, "onCreate: ++++++ user logged in: "
                     .concat(auth.getCurrentUser().getEmail()));
+            if (isStaff) {
+                isFirstTime = false;
+                userLoggedIn(isFirstTime);
+                return;
+            }
             user = SharedUtil.getUser(this);
             if (user == null) {
                 Log.w(TAG, "$$$$$$$$$$$$$$ onCreate: getting user from Firebase");
@@ -86,7 +91,7 @@ public abstract class BaseLoginActivity extends AppCompatActivity implements Log
                         .concat(user.getFullName()
                                 .concat(" - ")
                                 .concat(user.getEmail())));
-                userLoggedIn(false);
+                userLoggedIn(isFirstTime);
             }
 
         }
@@ -98,6 +103,11 @@ public abstract class BaseLoginActivity extends AppCompatActivity implements Log
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if (firebaseAuth.getCurrentUser() != null) {
                     Log.w(TAG, "############ onAuthStateChanged: getting user dto");
+                    if (isStaff) {
+                        isFirstTime = false;
+                        userLoggedIn(isFirstTime);
+                        return;
+                    }
                     loginPresenter.getUserByEmail(firebaseAuth.getCurrentUser().getEmail());
                 }
             }
@@ -166,7 +176,9 @@ public abstract class BaseLoginActivity extends AppCompatActivity implements Log
         Log.i(TAG, "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@onActivityResult: resultCode: " + resultCode);
         if (requestCode == REQUEST_LOGIN) {
             if (resultCode == RESULT_OK) {
-                Log.w(TAG, "onActivityResult: Firebase login OK. current user: ".concat(auth.getCurrentUser().getEmail()));
+                Log.w(TAG, "onActivityResult: Firebase login OK. current user: "
+                        .concat(auth.getCurrentUser().getEmail()));
+                firebaseOK = true;
                 return;
             }
             if (resultCode == RESULT_CANCELED) {
@@ -186,19 +198,8 @@ public abstract class BaseLoginActivity extends AppCompatActivity implements Log
         Log.i(TAG, "onUserFound... adding to FCM backend: ".concat(user.getFullName()));
         this.user = user;
         SharedUtil.saveUser(user, this);
-        FCMUserDTO u = new FCMUserDTO();
-        u.setDate(user.getDateRegistered());
-        u.setUserID(user.getUserID());
-        u.setFirstName(user.getFirstName());
-        u.setLastName(user.getLastName());
-        u.setToken(SharedUtil.getCloudMsgToken(this));
-        u.setAndroidVersion(Build.VERSION.RELEASE);
-        u.setManufacturer(Build.MANUFACTURER);
-        u.setDeviceModel(Build.MODEL);
-        u.setDepartmentID(user.getDepartmentID());
-        u.setDepartmentName(user.getDepartmentName());
-
-
+        FCMUserDTO u = Util.createFCMUser(user,SharedUtil.getCloudMsgToken(this));
+        firebaseOK = true;
         loginPresenter.addUserToFCM(u);
         userLoggedIn(true);
 

@@ -21,6 +21,7 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
@@ -38,6 +39,8 @@ import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.TextView;
 
+import com.aftarobot.traffic.backend.trafficApi.model.FCMUserDTO;
+import com.aftarobot.traffic.library.data.UserDTO;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -69,6 +72,23 @@ public class Util {
 
     public static final String AT = "@";
     public static final long TWO_MINUTES = 1000L * 60L * 60L * 2L;
+
+    public static FCMUserDTO createFCMUser(UserDTO user, String token) {
+        FCMUserDTO u = new FCMUserDTO();
+        u.setFcmID(user.getUserID()+"@"+Build.SERIAL);
+        u.setDate(user.getDateRegistered());
+        u.setUserID(user.getUserID());
+        u.setFirstName(user.getFirstName());
+        u.setLastName(user.getLastName());
+        u.setToken(token);
+        u.setAndroidVersion(Build.VERSION.RELEASE);
+        u.setManufacturer(Build.MANUFACTURER);
+        u.setDeviceModel(Build.MODEL);
+        u.setSerialNumber(Build.SERIAL);
+        u.setDepartmentID(user.getDepartmentID());
+        u.setDepartmentName(user.getDepartmentName());
+        return u;
+    }
 
     static Snackbar snackbar;
     public static Bitmap resizeBitMapImage(String filePath, int targetWidth, int targetHeight) {

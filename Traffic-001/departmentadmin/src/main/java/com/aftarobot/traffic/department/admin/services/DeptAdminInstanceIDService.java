@@ -1,4 +1,4 @@
-package com.aftarobot.traffic.officer.services;
+package com.aftarobot.traffic.department.admin.services;
 
 import android.app.IntentService;
 import android.util.Log;
@@ -21,8 +21,8 @@ import com.google.firebase.iid.FirebaseInstanceIdService;
  * <p>
  * TODO: Customize class - update intent actions and extra parameters.
  */
-public class OfficerInstanceIDService extends FirebaseInstanceIdService  {
-    public static final String TAG = OfficerInstanceIDService.class.getSimpleName();
+public class DeptAdminInstanceIDService extends FirebaseInstanceIdService  {
+    public static final String TAG = DeptAdminInstanceIDService.class.getSimpleName();
     LoginPresenter presenter;
 
     @Override
@@ -62,6 +62,7 @@ public class OfficerInstanceIDService extends FirebaseInstanceIdService  {
         if (oldToken != null) {
 
             UserDTO user = SharedUtil.getUser(getApplicationContext());
+
             FCMUserDTO u = Util.createFCMUser(user,token);
             presenter.addUserToFCM(u);
 

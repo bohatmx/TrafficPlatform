@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Traffic-001.iml" filepath="$PROJECT_DIR$/Traffic-001.iml" />
       <module fileurl="file://$PROJECT_DIR$/backend/backend.iml" filepath="$PROJECT_DIR$/backend/backend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/departmentadmin/departmentadmin.iml" filepath="$PROJECT_DIR$/departmentadmin/departmentadmin.iml" />
       <module fileurl="file://$PROJECT_DIR$/internalAdmin/internalAdmin.iml" filepath="$PROJECT_DIR$/internalAdmin/internalAdmin.iml" />
       <module fileurl="file://$PROJECT_DIR$/officer/officer.iml" filepath="$PROJECT_DIR$/officer/officer.iml" />
       <module fileurl="file://$PROJECT_DIR$/trafficlibrary/trafficlibrary.iml" filepath="$PROJECT_DIR$/trafficlibrary/trafficlibrary.iml" />

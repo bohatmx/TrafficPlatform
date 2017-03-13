@@ -1,4 +1,4 @@
-package com.aftarobot.traffic.officer.services;
+package com.aftarobot.traffic.department.admin.services;
 
 import android.app.ActivityManager;
 import android.app.Notification;
@@ -10,9 +10,9 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
+import com.aftarobot.traffic.department.admin.DeptMainActivity;
+import com.aftarobot.traffic.department.admin.R;
 import com.aftarobot.traffic.library.data.FCMData;
-import com.aftarobot.traffic.officer.MainActivity;
-import com.aftarobot.traffic.officer.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
@@ -25,12 +25,12 @@ import java.util.Map;
  * Created by aubreymalabie on 3/9/17.
  */
 
-public class OfficerMessagingService extends FirebaseMessagingService {
+public class DeptAdminMessagingService extends FirebaseMessagingService {
 
-    public OfficerMessagingService() {
+    public DeptAdminMessagingService() {
     }
 
-    public static final String TAG = OfficerMessagingService.class.getSimpleName(),
+    public static final String TAG = DeptAdminMessagingService.class.getSimpleName(),
             BROADCAST_EMERGENCY = "com.aftarobot.BROADCAST_EMERGENCY",
             BROADCAST_INSTRUCTION = "com.aftarobot.BROADCAST_INSTRUCTION";
 
@@ -39,7 +39,6 @@ public class OfficerMessagingService extends FirebaseMessagingService {
 
         boolean isRunning = isMainActivityRunning("com.aftarobot.traffic.officer");
         Log.w(TAG, "onMessageReceived: com.aftarobot.traffic.officer isRunning: " + isRunning);
-
         //check for notifcations without app data structures
         if (remoteMessage.getNotification() != null) {
             Log.e(TAG, "onMessageReceived: this is a NOTIFICATION from the console" );
@@ -51,16 +50,14 @@ public class OfficerMessagingService extends FirebaseMessagingService {
 
         try {
             Map<String, String> map = remoteMessage.getData();
-            for (String s : map.keySet()) {
-                Log.d(TAG, "onMessageReceived: param name: " + s + " value: " + map.get(s));
-            }
+
             FCMData data = new FCMData();
             data.setMessage(map.get("message"));
             data.setTitle(map.get("title"));
             data.setFromUser(map.get("fromUser"));
             data.setUserID(map.get("userID"));
             data.setJson(map.get("json"));
-            //data.setMessageType(Integer.parseInt(map.get("messageType")));
+            data.setMessageType(Integer.parseInt(map.get("messageType")));
             data.setAnnouncementID(map.get("announcementID"));
             if (map.get("expiryDate") != null)
                 data.setExpiryDate(Long.parseLong(map.get("expiryDate")));
@@ -74,29 +71,29 @@ public class OfficerMessagingService extends FirebaseMessagingService {
                     m = new Intent(BROADCAST_EMERGENCY);
                     bm.sendBroadcast(m);
                     Log.d(TAG, "onMessageReceived: broadcast sent to notify of emergency condition");
-                    sendNotification(data);
-                    return;
+                    break;
                 case FCMData.INSTRUCTION:
                     m = new Intent(BROADCAST_INSTRUCTION);
                     bm.sendBroadcast(m);
                     Log.d(TAG, "onMessageReceived: broadcast sent to notify of incoming instruction");
-                    sendNotification(data);
-                    return;
+                    break;
                 case FCMData.ANNOUNCEMENT:
                     break;
                 case FCMData.WELCOME:
                     break;
             }
 
+            sendNotification(data);
 
 
         } catch (Exception e) {
             Log.e(TAG, "onMessageReceived: ", e);
         }
     }
+
     private void sendNotification(FCMData data) {
         if (data.getTitle() == null) {
-            data.setTitle("TrafficOfficer");
+            data.setTitle("Department Administrator");
         }
         StringBuilder sb = new StringBuilder();
         NotificationCompat.Builder mBuilder =
@@ -106,7 +103,7 @@ public class OfficerMessagingService extends FirebaseMessagingService {
                         .setContentTitle(data.getTitle())
                         .setContentText(data.getMessage());
 
-        Intent resultIntent = new Intent(this, MainActivity.class);
+        Intent resultIntent = new Intent(this, DeptMainActivity.class);
         resultIntent.putExtra("data", data);
 
         PendingIntent resultPendingIntent =
@@ -136,7 +133,7 @@ public class OfficerMessagingService extends FirebaseMessagingService {
                         .setContentTitle(title)
                         .setContentText(body);
 
-        Intent resultIntent = new Intent(this, MainActivity.class);
+        Intent resultIntent = new Intent(this, DeptMainActivity.class);
         resultIntent.putExtra("title", title);
         resultIntent.putExtra("body", body);
 

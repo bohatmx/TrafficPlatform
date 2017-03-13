@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">DepartmentAdmin</string>
+    <string name="action_settings">Settings</string>
+    <string name="dept_admin_api_key">AIzaSyD2ufpCalDx5_VqZhDpWoupkTQRc7JBEpk</string>
+</resources>

@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "trafficplatform-159613",
+  "private_key_id": "cdc82e7455a24c54b5939e475a53db76999065d0",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCjxcJfxeHVGMMA\nQeLpS1nn3qVFa2//icCP4+IzvPW/Evjd40eUDUNQQNS/7MqL+2Vtbj1iEY/YVG7l\nBOVj+P+RzCEAE4lPCMZu2hjl54zHBWYbER+5fTNa5L6XVOUyTpzZY5H2s2IkUZ1a\nsB2qKAbYlHkl0aM5LYwfwtUNRYHB6N6+9aqkejoVAIwiGtzxQOslCuigz9gS3bLj\nFomZAdLj22iPNZzRzzS5TWmMQ0drCA9H+2GmupRp7WhLvPfONV2SrghFuxdAU7ws\nsZH1/Cb54ts4QJc2H075gdpKQBJPAN+yb4Onz1j6kkohioqp3Fmoo4SJlqEKoz6Y\nWiZA6qTLAgMBAAECggEAaPUnshtutRROfM687sjU0K42+zt0pq+Q0ma4pHHYiOFO\nz12GlRK+7iLudiX6VSYDhdNd0YjxyDGsdGfj32NH3xeUmqjqmdVE3uw1groX1cDX\nBEfALi9YB0uL/g5xaQFKsmOGuzWRkzcfAmzWRiOq54iX763fzpgrMnu58Ox30V43\nLYnb6HPy63za1/oh7eEjwoU57h5CTyTnmqD7t4pjuwjXGCRSEbdzAzf4bpNUON9T\nQ024hWF3PsXF41KVAMGxy3eM6Pxzp0vZ5JzMag2W2RI9IfgjK9vjy6+ujtWnfrtX\nxpkkf+Kou253lSLKDys0Bzzr8LIGbrs8FQCFhGDu2QKBgQDUF7D6fOdrF1WWE8hZ\nZA0d8tPh73ZScE5zBrr0A3Df0L/kO1mgbg9KubQXlHMqk7AzOFnSvKn9Gl4n/qhS\n3NuI78vI00nUpYLdJ9JjpuN4kq+b09tT7lmFXvhmkDuA2vM75NsaMn/IkaJtSAJw\npm4Qk6jfeDdFh0A9AhFCPZr8XwKBgQDFrT3Ed7ZunmQEsofF+17ogqVYNmkXpYbN\nngBZ0ZPtqNxF/8/CArf9+V0db+sPb9U/Ph/i36RseRdnymYjyrKaLu9J/o9wbd+r\nPQccFFb2JolsxmQMjXOK3QTv6TeKGB2qtxn9zOojU1KSmHuIR60Lonb7zamNYPB2\nVk0FHbGvFQKBgQC9Dp1Iu9xBntxA2kOGQ2RZ5OIwjReI5ulXKZGu//421EqpNKpx\nEop5Ds5VEpQSSPIQxlNzQY+5uS5jMmJy8sKS70ZVLtqqPhtH7j5hbBtqmD8HhbMF\nvvp3o6+DJWCVPRcCtb8FPCyh6gfCqCTcq86C4kzvXqbOSIDfoR8nT+j+uwKBgQCQ\nPA8EqsDPR/z8vHN7DyY6CxGwIstduKZ6o13oK5Z/Y6WN4dDq4+byhp/dmcru0Y/M\nfHzxonMrvtNIJROP7BeTjsmEuRxaUaFRJc9pOqIVKxs85ikcS53R5eDzWLzwoxYK\neV2apYj1y5dFZcNFNd9azOl6Y57ijKgIAIJkSD1c3QKBgQCiMmY63jCfzWGhjE50\nR3pDQ1AYpGr3fU/iMnrR9w3y16cJGNOIlmIrUZxVYeIDgrq3kkWtlKTUF2U+AZzR\nqLpRX9bMgqPMAzF6NIZoGgXpmwOKA7ta+DmMsVXtkSZYghBj2lgPq4Fqydq9lAn8\n3cPC+tIzQKPfAfC1yrcN8PgI/w==\n-----END PRIVATE KEY-----\n",
+  "client_email": "trafficbackend@trafficplatform-159613.iam.gserviceaccount.com",
+  "client_id": "105795436034691518913",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/trafficbackend%40trafficplatform-159613.iam.gserviceaccount.com"
+}

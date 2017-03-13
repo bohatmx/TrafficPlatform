@@ -1,4 +1,4 @@
-package com.aftarobot.admin;
+package com.aftarobot.traffic.department.admin;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -17,15 +17,12 @@ import com.google.firebase.crash.FirebaseCrash;
 
 import es.dmoral.toasty.Toasty;
 
-public class InternalLoginActivity extends BaseLoginActivity implements LoginFragment.LoginListener {
-    public static final String TAG = InternalLoginActivity.class.getSimpleName();
+public class DeptAdminLoginActivity extends BaseLoginActivity implements LoginFragment.LoginListener{
+
     LoginFragment loginFragment;
     Snackbar snackbar;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "onCreate: $$$$$$$$$$ ** $$$$$$$$$$$$$$$$");
-        isStaff = true;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_m2);
 
@@ -37,6 +34,7 @@ public class InternalLoginActivity extends BaseLoginActivity implements LoginFra
         FragmentTransaction ft = fm.beginTransaction();
         loginFragment = new LoginFragment();
         loginFragment.setListener(this);
+
         ft.replace(R.id.frameLayout, loginFragment);
         ft.commit();
     }
@@ -44,21 +42,21 @@ public class InternalLoginActivity extends BaseLoginActivity implements LoginFra
     @Override
     public void userLoggedIn(boolean isFirstTime) {
         Log.i(TAG, "userLoggedIn: #################............");
-        startMain();
+        getLocationPermission();
+
+        Intent b = new Intent(this,DeptMainActivity.class);
+        startActivity(b);
+        finish();
     }
 
     @Override
     public void loginFailed(int type) {
-        Log.e(TAG, "loginFailed: -----------------error type: " + type);
-
-        if (firebaseOK) {
-            startMain();
-            return;
-        }
-
+        Log.e(TAG, "loginFailed: -------------------");
+        Toasty.error(this, "Login failed. Please check with your administrator", Toast.LENGTH_SHORT, true).show();
+        FirebaseCrash.report(new Exception("User login failed"));
         switch (type) {
             case FIREBASE_AUTH_FAILED:
-                snackbar = Snackbar.make(loginFragment.btn, "Login failed", Snackbar.LENGTH_INDEFINITE);
+                snackbar = Snackbar.make(loginFragment.btn,"Login failed",Snackbar.LENGTH_INDEFINITE);
                 snackbar.setActionTextColor(Color.parseColor(Constants.ORANGE));
                 snackbar.setAction("Try Again", new View.OnClickListener() {
                     @Override
@@ -66,27 +64,21 @@ public class InternalLoginActivity extends BaseLoginActivity implements LoginFra
                         startLogin();
                     }
                 }).show();
-                FirebaseCrash.report(new Exception("User login failed"));
                 break;
             case TRAFFIC_USER_NOT_FOUND:
-                Log.e(TAG, "loginFailed: Firebase user not found by email ... " );
-                 startMain();
+                Toasty.error(this,"Please contact your Adminstrator to complete setup",
+                        Toast.LENGTH_LONG,true).show();
+                finish();
                 break;
             case USER_CANCELLED:
-                Toasty.warning(this, "You cancelled the login process. See ya later, alligator!",
-                        Toast.LENGTH_LONG, true).show();
-                FirebaseCrash.report(new Exception("User login cancelled"));
+                Toasty.warning(this,"You cancelled the login process. See ya later, alligator!",
+                        Toast.LENGTH_LONG,true).show();
                 finish();
                 break;
         }
 
     }
 
-    private void startMain() {
-        Intent m = new Intent(this,MainActivity.class);
-        startActivity(m);
-        finish();
-    }
     public void showSnackBar(String title, String action, String color) {
         snackbar = Snackbar.make(loginFragment.btn, title, Snackbar.LENGTH_INDEFINITE);
         snackbar.setActionTextColor(Color.parseColor(color));

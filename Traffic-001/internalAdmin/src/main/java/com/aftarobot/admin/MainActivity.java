@@ -13,6 +13,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -22,7 +23,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.aftarobot.admin.departments.DepartmentAdminActivity;
 import com.aftarobot.admin.departments.DepartmentListFragment;
@@ -32,17 +32,13 @@ import com.aftarobot.admin.users.UserListFragment;
 import com.aftarobot.traffic.library.data.DepartmentDTO;
 import com.aftarobot.traffic.library.data.ResponseBag;
 import com.aftarobot.traffic.library.data.UserDTO;
-import com.aftarobot.traffic.library.login.BaseLoginActivity;
-import com.aftarobot.traffic.library.util.Constants;
 import com.aftarobot.traffic.library.util.DepthPageTransformer;
 import com.aftarobot.traffic.library.util.PagerFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import es.dmoral.toasty.Toasty;
-
-public class MainActivity extends BaseLoginActivity
+public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         FinesFragment.FinesFragmentListener, UserListFragment.UserFragmentListener,
         DepartmentListFragment.DepartmentrFragmentListener {
@@ -70,7 +66,9 @@ public class MainActivity extends BaseLoginActivity
         setup();
         buildPages();
     }
+
     NavigationView navigationView;
+
     private void setup() {
         Log.d(TAG, "setup: .......................");
         viewPager = (ViewPager) findViewById(R.id.viewPager);
@@ -90,34 +88,14 @@ public class MainActivity extends BaseLoginActivity
         toggle.syncState();
         drawer.openDrawer(GravityCompat.START, true);
 
-         navigationView = (NavigationView) findViewById(R.id.nav_view);
-        if (user != null) {
-            View hdr = navigationView.getHeaderView(0);
-            TextView txt = (TextView) hdr.findViewById(R.id.txtName);
-            txt.setText(user.getFullName());
-            Log.d(TAG, "setup: sucker shoulb set");
-        } else {
-            Log.e(TAG, "setup: somepn is fucked up!" );
-        }
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View hdr = navigationView.getHeaderView(0);
+        TextView txt = (TextView) hdr.findViewById(R.id.txtName);
+        txt.setText("Staff Member");
+
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    @Override
-    public void userLoggedIn(boolean isFirstTime) {
-        Log.i(TAG, "userLoggedIn: building pages in viewpager...");
-        if (isFirstTime) {
-            Toasty.success(this, "You have been logged in", Toast.LENGTH_SHORT, true).show();
-        }
-        if (user != null) {
-            View hdr = navigationView.getHeaderView(0);
-            TextView txt = (TextView) hdr.findViewById(R.id.txtName);
-            txt.setText(user.getFullName());
-            Log.d(TAG, "setup: sucker shoulb set");
-        } else {
-            Log.e(TAG, "setup: somepn is fucked up!" );
-        }
-
-    }
 
     private void buildPages() {
         pagerFragments = new ArrayList<>(2);
@@ -132,34 +110,6 @@ public class MainActivity extends BaseLoginActivity
         pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
         viewPager.setPageTransformer(true, new DepthPageTransformer());
-    }
-
-    @Override
-    public void loginFailed(int type) {
-        drawer.closeDrawer(GravityCompat.START,true);
-        switch (type) {
-            case FIREBASE_AUTH_FAILED:
-                snackbar = Snackbar.make(toolbar,"Login failed. Please check credentials",Snackbar.LENGTH_INDEFINITE);
-                snackbar.setActionTextColor(Color.parseColor(Constants.ORANGE));
-                snackbar.setAction("Try Again", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        startLogin();
-                    }
-                }).show();
-                break;
-            case TRAFFIC_USER_NOT_FOUND:
-                Toasty.success(this,"Welcome aboard the best Traffic Officer app!!!",
-                        Toast.LENGTH_LONG,true).show();
-                break;
-            case USER_CANCELLED:
-                Toasty.warning(this,"You cancelled the login process. See ya later!",
-                        Toast.LENGTH_LONG,true).show();
-                finish();
-                break;
-        }
-
-
     }
 
     @Override
@@ -232,7 +182,7 @@ public class MainActivity extends BaseLoginActivity
     public void addNewUser(DepartmentDTO dept) {
         Log.d(TAG, "addNewUser: ........");
         Intent m = new Intent(this, UserAdminActivity.class);
-        m.putExtra("department",dept);
+        m.putExtra("department", dept);
         startActivityForResult(m, REQUEST_NEW_USER);
     }
 
@@ -249,7 +199,7 @@ public class MainActivity extends BaseLoginActivity
             case REQUEST_NEW_DEPT:
                 if (resCode == RESULT_OK) {
                     Log.i(TAG, "onActivityResult: new department added");
-                    ResponseBag bag = (ResponseBag)data.getSerializableExtra("bag");
+                    ResponseBag bag = (ResponseBag) data.getSerializableExtra("bag");
                     if (bag != null) {
                         showSnackBar("Departments added to database: " + bag.getDepartments().size());
                         departmentListFragment.addDepartments(bag.getDepartments());
@@ -309,16 +259,18 @@ public class MainActivity extends BaseLoginActivity
             return pagerFragments.get(position).getTitle();
         }
     }
-   private CharSequence drawTab(PagerFragment pf) {
-       SpannableStringBuilder sb = new SpannableStringBuilder(pf.getTitle()); // space added before text for convenience
 
-       Drawable drawable = ContextCompat.getDrawable(this, com.aftarobot.traffic.library.R.drawable.ic_alarm);
-       drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-       ImageSpan span = new ImageSpan(drawable, ImageSpan.ALIGN_BASELINE);
-       sb.setSpan(span, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    private CharSequence drawTab(PagerFragment pf) {
+        SpannableStringBuilder sb = new SpannableStringBuilder(pf.getTitle()); // space added before text for convenience
 
-       return sb;
-   }
+        Drawable drawable = ContextCompat.getDrawable(this, com.aftarobot.traffic.library.R.drawable.ic_alarm);
+        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+        ImageSpan span = new ImageSpan(drawable, ImageSpan.ALIGN_BASELINE);
+        sb.setSpan(span, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        return sb;
+    }
+
     private List<PagerFragment> pagerFragments;
     Snackbar snackbar;
 
